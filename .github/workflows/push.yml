@@ -48,7 +48,7 @@ jobs:
             echo '2'
             # 查看本地文件
             ls -al
-            # git push -u origin_master master
+            git push -u origin_master master
             echo '3'
 
         
