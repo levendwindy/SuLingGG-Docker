@@ -43,8 +43,10 @@ jobs:
             # git branch -M master
             # 已经存在无法添加
             # git remote add origin $DESTINATION_REPO
+             # 查看远程仓库
+            git remote -v
             echo '2'
-            git push -u origin master
+            # git push -u origin master
             echo '3'
 
         
