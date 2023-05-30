@@ -271,7 +271,7 @@ jobs:
 
 ###########################################################################################
       - name: 0. 构建原厂Uboot 修改前config 删除 /bin
-        if: env.VanillaUboot == 'true'
+        if: env.VanillaUboot == 'true' && !failure() && !cancelled()
         run: |
           rm -rf openwrt/bin openwrt/.config
           cp config/$CONFIG_FILE openwrt/
@@ -281,14 +281,14 @@ jobs:
           cat .config
           
       - name: 0.修改后config
-        if: env.VanillaUboot == 'true'
+        if: env.VanillaUboot == 'true' && !failure() && !cancelled()
         run: |
           cd openwrt && ./REVISECONFIG.sh  $NAME
           echo "修改后"
           cat .config
 
       - name: 0.Download package
-        if: env.VanillaUboot == 'true'
+        if: env.VanillaUboot == 'true' && !failure() && !cancelled()
         id: package0
         run: |
           cd openwrt && rm -rf tmp
@@ -297,7 +297,7 @@ jobs:
           find dl -size -1024c -exec rm -f {} \;
         
       - name: 0.Compile
-        if: env.VanillaUboot == 'true'
+        if: env.VanillaUboot == 'true' && !failure() && !cancelled()
         id: compile_0
         run: |
           cd openwrt
@@ -312,7 +312,7 @@ jobs:
 
           
       - name : 0.Upload Vanilla BIN stock（非108M 原厂Uboot）
-        if: env.VanillaUboot == 'true'
+        if: env.VanillaUboot == 'true' && !failure() && !cancelled()
         uses: actions/upload-artifact@master
         with:
           name: ${{ env.VanillaBIN }}
@@ -320,7 +320,7 @@ jobs:
           if-no-files-found: warn # error 'warn' or 'ignore' are also available, defaults to `warn`
           
       - name : 0.Upload Vanilla factory（非108M 原厂Uboot）
-        if: env.VanillaUboot == 'true'
+        if: env.VanillaUboot == 'true' && !failure() && !cancelled()
         uses: actions/upload-artifact@master
         with:
           name: ${{ env.VanillaFACTORY }}
@@ -328,7 +328,7 @@ jobs:
           if-no-files-found: ignore # error 'warn' or 'ignore' are also available, defaults to `warn`
           
       - name : 0.Upload Vanilla sysupgrade（非108M 原厂Uboot）
-        if: env.VanillaUboot == 'true'
+        if: env.VanillaUboot == 'true' && !failure() && !cancelled()
         uses: actions/upload-artifact@master
         with:
           name: ${{ env.VanillaSYSUPGRADE }}
@@ -345,7 +345,7 @@ jobs:
 ###########################################################################################
  
       - name: 2. 108M  ttyd filetransfer
-        if: env.PLUGINver == 'true'
+        if: env.PLUGINver == 'true' && !failure() && !cancelled()
         run: |
           rm -rf openwrt/bin openwrt/.config
           cp config/$CONFIG_FILE openwrt/
@@ -354,7 +354,7 @@ jobs:
           cat .config
           
       - name: 2.修改后config
-        if: env.PLUGINver == 'true'
+        if: env.PLUGINver == 'true' && !failure() && !cancelled()
         run: |
           cd openwrt 
           ./REVISECONFIG.sh  ttyd filetransfer
@@ -362,7 +362,7 @@ jobs:
           cat .config
 
       - name: 2.Download package
-        if: env.PLUGINver == 'true'
+        if: env.PLUGINver == 'true' && !failure() && !cancelled()
         id: package2
         run: |
           cd openwrt  && rm -rf tmp
@@ -371,7 +371,7 @@ jobs:
           find dl -size -1024c -exec rm -f {} \;
         
       - name: 2.Compile
-        if: env.PLUGINver == 'true'
+        if: env.PLUGINver == 'true' && !failure() && !cancelled()
         id: compile_2
         run: |
           cd openwrt
@@ -386,7 +386,7 @@ jobs:
 
           
       - name : 2.Upload Vanilla BIN
-        if: env.PLUGINver == 'true'
+        if: env.PLUGINver == 'true' && !failure() && !cancelled()
         uses: actions/upload-artifact@master
         with:
           name: ${{ env.mini_BIN }}
@@ -394,7 +394,7 @@ jobs:
           if-no-files-found: warn # error 'warn' or 'ignore' are also available, defaults to `warn`
 
       - name : 2.Upload factory
-        if: env.PLUGINver == 'true'
+        if: env.PLUGINver == 'true' && !failure() && !cancelled()
         uses: actions/upload-artifact@master
         with:
           name: ${{ env.mini_FACTORY }}
@@ -402,15 +402,15 @@ jobs:
           if-no-files-found: ignore # error 'warn' or 'ignore' are also available, defaults to `warn`
           
       - name : 2.Upload sysupgrade
-        if: env.PLUGINver == 'true'
+        if: env.PLUGINver == 'true' && !failure() && !cancelled()
         uses: actions/upload-artifact@master
-        with:
+        with: 
           name: ${{ env.mini_SYSUPGRADE }}
           path: openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin
           if-no-files-found: ignore
       
       - name: 2.tar release
-        if: env.Release == 'true' && !failure() && !cancelled()
+        if: env.Release == 'true' && !failure() && !cancelled() && env.PLUGINver == 'true'
           #tar zcvf RELEASE/$mini_BIN.tar.gz --exclude=openwrt/bin/targets/*/*/*squashfs-factory.bin  --exclude=openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin openwrt/bin/ || echo "$NAME is no directory BIN"
           #tar zcvf RELEASE/$mini_FACTORY.tar.gz openwrt/bin/targets/*/*/*squashfs-factory.bin || echo "$NAME is no factory.bin"
           #tar zcvf RELEASE/$mini_SYSUPGRADE.tar.gz openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin || echo "ERROR: $NAME is no sysupgrade"
@@ -419,7 +419,7 @@ jobs:
           
 ############################################################################################
       - name: 3.108M ssrplus
-        if: env.PLUGINver == 'true'
+        if: env.PLUGINver == 'true' && !failure() && !cancelled()
         run: |
           rm -rf openwrt/bin openwrt/.config
           cp config/$CONFIG_FILE openwrt/
@@ -428,13 +428,13 @@ jobs:
           cat .config
           
       - name: 3.修改后config
-        if: env.PLUGINver == 'true'
+        if: env.PLUGINver == 'true' && !failure() && !cancelled()
         run: |
           cd openwrt 
           ./REVISECONFIG.sh  ttyd filetransfer ssr-plus
 
       - name: 3.Download package
-        if: env.PLUGINver == 'true'
+        if: env.PLUGINver == 'true' && !failure() && !cancelled()
         id: package_3
         run: |
           cd openwrt  && rm -rf tmp
@@ -443,7 +443,7 @@ jobs:
           find dl -size -1024c -exec rm -f {} \;
         
       - name: 3.Compile
-        if: env.PLUGINver == 'true'
+        if: env.PLUGINver == 'true' && !failure() && !cancelled()
         id: compile_3
         run: |
           cd openwrt
@@ -458,7 +458,7 @@ jobs:
 
           
       - name : 3.Upload Vanilla BIN
-        if: env.PLUGINver == 'true'
+        if: env.PLUGINver == 'true' && !failure() && !cancelled()
         uses: actions/upload-artifact@master
         with:
           name: ${{ env.ssrplus_BIN }}
@@ -466,7 +466,7 @@ jobs:
           if-no-files-found: warn # error 'warn' or 'ignore' are also available, defaults to `warn`
 
       - name : 3.Upload factory
-        if: env.PLUGINver == 'true'
+        if: env.PLUGINver == 'true' && !failure() && !cancelled()
         uses: actions/upload-artifact@master
         with:
           name: ${{ env.ssrplus_FACTORY }}
@@ -474,7 +474,7 @@ jobs:
           if-no-files-found: ignore # error 'warn' or 'ignore' are also available, defaults to `warn`
           
       - name : 3.Upload sysupgrade
-        if: env.PLUGINver == 'true'
+        if: env.PLUGINver == 'true' && !failure() && !cancelled()
         uses: actions/upload-artifact@master
         with:
           name: ${{ env.ssrplus_SYSUPGRADE }}
@@ -482,7 +482,7 @@ jobs:
           if-no-files-found: ignore
       
       - name: 3.tar release
-        if: env.Release == 'true' && !failure() && !cancelled()
+        if: env.Release == 'true' && !failure() && !cancelled() && env.PLUGINver == 'true'
           #tar zcvf RELEASE/$ssrplus_BIN.tar.gz --exclude=openwrt/bin/targets/*/*/*squashfs-factory.bin  --exclude=openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin openwrt/bin/ || echo "$NAME is no directory BIN"
           #tar zcvf RELEASE/$ssrplus_FACTORY.tar.gz openwrt/bin/targets/*/*/*squashfs-factory.bin || echo "$NAME is no factory.bin"
           #tar zcvf RELEASE/$ssrplus_SYSUPGRADE.tar.gz openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin || echo "ERROR: $NAME is no sysupgrade"
@@ -490,7 +490,7 @@ jobs:
           tar zcvf RELEASE/$ssrplus_BIN.tar.gz openwrt/bin/ || echo "$NAME is no directory BIN"  
 ############################################################################################
       - name: 4.108M passwall
-        if: env.PLUGINver == 'true'
+        if: env.PLUGINver == 'true' && !failure() && !cancelled()
         run: |
           rm -rf openwrt/bin openwrt/.config
           cp config/$CONFIG_FILE openwrt/
@@ -499,13 +499,13 @@ jobs:
           cat .config
           
       - name: 4.修改后config
-        if: env.PLUGINver == 'true'
+        if: env.PLUGINver == 'true' && !failure() && !cancelled()
         run: |
           cd openwrt 
           ./REVISECONFIG.sh  ttyd filetransfer passwall
 
       - name: 4.Download package
-        if: env.PLUGINver == 'true'
+        if: env.PLUGINver == 'true' && !failure() && !cancelled()
         id: package_4
         run: |
           cd openwrt  && rm -rf tmp
@@ -514,7 +514,7 @@ jobs:
           find dl -size -1024c -exec rm -f {} \;
         
       - name: 4.Compile
-        if: env.PLUGINver == 'true'
+        if: env.PLUGINver == 'true' && !failure() && !cancelled()
         id: compile_4
         run: |
           cd openwrt
@@ -529,7 +529,7 @@ jobs:
 
           
       - name : 4.Upload Vanilla BIN
-        if: env.PLUGINver == 'true'
+        if: env.PLUGINver == 'true' && !failure() && !cancelled()
         uses: actions/upload-artifact@master
         with:
           name: ${{ env.passwall_BIN }}
@@ -537,7 +537,7 @@ jobs:
           if-no-files-found: warn # error 'warn' or 'ignore' are also available, defaults to `warn`
 
       - name : 4.Upload factory
-        if: env.PLUGINver == 'true'
+        if: env.PLUGINver == 'true' && !failure() && !cancelled()
         uses: actions/upload-artifact@master
         with:
           name: ${{ env.passwall_FACTORY }}
@@ -545,7 +545,7 @@ jobs:
           if-no-files-found: ignore # error 'warn' or 'ignore' are also available, defaults to `warn`
           
       - name : 4.Upload sysupgrade
-        if: env.PLUGINver == 'true'
+        if: env.PLUGINver == 'true' && !failure() && !cancelled()
         uses: actions/upload-artifact@master
         with:
           name: ${{ env.passwall_SYSUPGRADE }}
@@ -553,7 +553,7 @@ jobs:
           if-no-files-found: ignore
       
       - name: 4.tar release
-        if: env.Release == 'true' && !failure() && !cancelled()
+        if: env.Release == 'true' && !failure() && !cancelled() && env.PLUGINver == 'true'
          # tar zcvf RELEASE/$passwall_BIN.tar.gz --exclude=openwrt/bin/targets/*/*/*squashfs-factory.bin  --exclude=openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin openwrt/bin/ || echo "$NAME is no directory BIN"
          # tar zcvf RELEASE/$passwall_FACTORY.tar.gz openwrt/bin/targets/*/*/*squashfs-factory.bin || echo "$NAME is no factory.bin"
          # tar zcvf RELEASE/$passwall_SYSUPGRADE.tar.gz openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin || echo "ERROR: $NAME is no sysupgrade"
@@ -561,7 +561,7 @@ jobs:
           tar zcvf RELEASE/$passwall_BIN.tar.gz openwrt/bin/ || echo "$NAME is no directory BIN"
 ############################################################################################
       - name: 5.108M openclash
-        if: env.PLUGINver == 'true'
+        if: env.PLUGINver == 'true' && !failure() && !cancelled()
         run: |
           rm -rf openwrt/bin openwrt/.config
           cp config/$CONFIG_FILE openwrt/
@@ -570,14 +570,14 @@ jobs:
           cat .config
           
       - name: 5.修改后config
-        if: env.PLUGINver == 'true'
+        if: env.PLUGINver == 'true' && !failure() && !cancelled()
         run: |
           cd openwrt 
           ./REVISECONFIG.sh  ttyd filetransfer openclash
           cat .config
 
       - name: 5.Download package
-        if: env.PLUGINver == 'true'
+        if: env.PLUGINver == 'true' && !failure() && !cancelled()
         id: package_5
         run: |
           cd openwrt  && rm -rf tmp
@@ -586,7 +586,7 @@ jobs:
           find dl -size -1024c -exec rm -f {} \;
         
       - name: 5.Compile
-        if: env.PLUGINver == 'true'
+        if: env.PLUGINver == 'true' && !failure() && !cancelled()
         id: compile_5
         run: |
           cd openwrt
@@ -601,7 +601,7 @@ jobs:
 
           
       - name : 5.Upload Vanilla BIN
-        if: env.PLUGINver == 'true'
+        if: env.PLUGINver == 'true' && !failure() && !cancelled()
         uses: actions/upload-artifact@master
         with:
           name: ${{ env.openclash_BIN }}
@@ -609,7 +609,7 @@ jobs:
           if-no-files-found: warn # error 'warn' or 'ignore' are also available, defaults to `warn`
 
       - name : 5.Upload factory
-        if: env.PLUGINver == 'true'
+        if: env.PLUGINver == 'true' && !failure() && !cancelled()
         uses: actions/upload-artifact@master
         with:
           name: ${{ env.openclash_FACTORY }}
@@ -617,7 +617,7 @@ jobs:
           if-no-files-found: ignore # error 'warn' or 'ignore' are also available, defaults to `warn`
           
       - name : 5.Upload sysupgrade
-        if: env.PLUGINver == 'true'
+        if: env.PLUGINver == 'true' && !failure() && !cancelled()
         uses: actions/upload-artifact@master
         with:
           name: ${{ env.openclash_SYSUPGRADE }}
@@ -625,7 +625,7 @@ jobs:
           if-no-files-found: ignore
       
       - name: 5.tar release
-        if: env.Release == 'true' && !failure() && !cancelled()
+        if: env.Release == 'true' && !failure() && !cancelled() && env.PLUGINver == 'true'
          # tar zcvf RELEASE/$openclash_BIN.tar.gz --exclude=openwrt/bin/targets/*/*/*squashfs-factory.bin  --exclude=openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin openwrt/bin/ || echo "$NAME is no directory BIN"
          # tar zcvf RELEASE/$openclash_FACTORY.tar.gz openwrt/bin/targets/*/*/*squashfs-factory.bin || echo "$NAME is no factory.bin"
          # tar zcvf RELEASE/$openclash_SYSUPGRADE.tar.gz openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin || echo "ERROR: $NAME is no sysupgrade"
@@ -633,7 +633,7 @@ jobs:
           tar zcvf RELEASE/$openclash_BIN.tar.gz openwrt/bin/ || echo "$NAME is no directory BIN"
 ############################################################################################
       - name: 6.108M openclash ssrplus passwall
-        if: env.PLUGINver == 'true'
+        if: env.PLUGINver == 'true' && !failure() && !cancelled()
         run: |
           rm -rf openwrt/bin openwrt/.config
           cp config/$CONFIG_FILE openwrt/
@@ -642,14 +642,14 @@ jobs:
           cat .config
           
       - name: 6.修改后config
-        if: env.PLUGINver == 'true'
+        if: env.PLUGINver == 'true' && !failure() && !cancelled()
         run: |
           cd openwrt 
           ./REVISECONFIG.sh  ttyd filetransfer openclash ssr-plus passwall
           cat .config
 
       - name: 6.Download package
-        if: env.PLUGINver == 'true'
+        if: env.PLUGINver == 'true' && !failure() && !cancelled()
         id: package_6
         run: |
           cd openwrt  && rm -rf tmp
@@ -658,7 +658,7 @@ jobs:
           find dl -size -1024c -exec rm -f {} \;
         
       - name: 6.Compile
-        if: env.PLUGINver == 'true'
+        if: env.PLUGINver == 'true' && !failure() && !cancelled()
         id: compile_6
         run: |
           cd openwrt
@@ -672,7 +672,7 @@ jobs:
           cd openwrt && make -j1 V=s 
           
       - name : 6.Upload Vanilla BIN
-        if: env.PLUGINver == 'true'
+        if: env.PLUGINver == 'true' && !failure() && !cancelled()
         uses: actions/upload-artifact@master
         with:
           name: ${{ env.openclash_ssrplus_passwall_BIN }}
@@ -680,7 +680,7 @@ jobs:
           if-no-files-found: warn # error 'warn' or 'ignore' are also available, defaults to `warn`
 
       - name : 6.Upload factory
-        if: env.PLUGINver == 'true'
+        if: env.PLUGINver == 'true' && !failure() && !cancelled()
         uses: actions/upload-artifact@master
         with:
           name: ${{ env.openclash_ssrplus_passwall_FACTORY }}
@@ -688,7 +688,7 @@ jobs:
           if-no-files-found: ignore # error 'warn' or 'ignore' are also available, defaults to `warn`
           
       - name : 6.Upload sysupgrade
-        if: env.PLUGINver == 'true'
+        if: env.PLUGINver == 'true' && !failure() && !cancelled()
         uses: actions/upload-artifact@master
         with:
           name: ${{ env.openclash_ssrplus_passwall_SYSUPGRADE }}
@@ -696,7 +696,7 @@ jobs:
           if-no-files-found: ignore
       
       - name: 6.tar release
-        if: env.Release == 'true' && !failure() && !cancelled()
+        if: env.Release == 'true' && !failure() && !cancelled() && env.PLUGINver == 'true'
         #  tar zcvf RELEASE/$openclash_ssrplus_passwall_BIN.tar.gz --exclude=openwrt/bin/targets/*/*/*squashfs-factory.bin  --exclude=openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin openwrt/bin/ || echo "$NAME is no directory BIN"
         #  tar zcvf RELEASE/$openclash_ssrplus_passwall_FACTORY.tar.gz openwrt/bin/targets/*/*/*squashfs-factory.bin || echo "$NAME is no factory.bin"
         #  tar zcvf RELEASE/$openclash_ssrplus_passwall_SYSUPGRADE.tar.gz openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin || echo "ERROR: $NAME is no sysupgrade"
@@ -704,7 +704,7 @@ jobs:
           tar zcvf RELEASE/$openclash_ssrplus_passwall_BIN.tar.gz openwrt/bin/ || echo "$NAME is no directory BIN"
      
       - name: 1.Generate release tag
-        if: env.Release == 'true' && !failure()  && !cancelled()
+        if: env.Release == 'true' && !failure() && !cancelled()
         id: tag
         run: |
           echo "::set-output name=release_tag::$NAME-$(date +"%Y.%m.%d")"
@@ -725,6 +725,7 @@ jobs:
             RELEASE/*
         
       - name: PUSH
+        if: env.Release == 'true' && !failure()  && !cancelled()
         env:
           SSH_KEY: ${{ secrets.SSH_KEY }}
           SSH_PUB: ${{ secrets.SSH_PUB }}
