@@ -21,6 +21,10 @@ env:
   Release: true
   SOURCE_REPO: 'https://github.com/levenwindy/test1'
   DESTINATION_REPO: 'git@github.com:levenwindy/test1.git'
+  SSH_KEY: ${{ secrets.SSH_KEY }}
+  SSH_PUB: ${{ secrets.SSH_PUB }}
+  EMAIL_GITHUB: ${{ secrets.EMAIL_GITHUB }}
+  NAME_GITHUB: ${{ secrets.NAME_GITHUB }}
   
   
 on:
@@ -132,6 +136,45 @@ jobs:
           echo -e "\033[31m DIY_P3_SH:  $DIY_P3_SH  \033[0m"
           
           echo "matrix.TARGETS: ${{ matrix.TARGETS }}"
+      
+      - name: UPload test
+        if: env.Release == 'true' && !failure() && !cancelled() 
+        run: |
+          # 1.判断是否有人在下载
+          while true;do svn co https://github.com/levenwindy/test1/trunk/log ;uplog=`cat log/log`
+            if [[ $uplog != 0 ]];then echo "log is not 0, someone is using " ;rm -rf log; echo 'sleep 20s...' ;sleep 20s;
+          else echo "uplog = $uplog" ;rm -rf log; break ;fi ;done
+          
+          # 2.成功后同步源码
+          git clone https://github.com/levenwindy/test1.git ; cd test1
+          git config --global user.email $EMAIL_GITHUB && echo 'git 邮箱设置成功 '
+          git config --global user.name  $NAME_GITHUB  && echo 'git 密码设置成功 '
+          echo '1' > log/log
+          git add .
+          git commit -m 'log=1 用户正在更新..'
+          git remote add origin_master  $DESTINATION_REPO
+          git push -u origin_master master  && echo '更新成功'
+          
+          # 3 git删除相关历史提交记录，相关文件保持当前状态
+          echo '0' > log/log && echo 'log=0'
+          git checkout --orphan latest_branch
+          # 将文件拷贝进来 测试
+          touch UPload_test
+          # mv 
+          # 更新log
+          # 上传大文件
+          git lfs install
+          git lfs track '*.zip'
+          git add -A
+          git commit -am "delte history git log，first commit"
+          git branch -D master
+          git branch -m master
+          git push -f origin_master  master && echo '上传成功'
+      
+      - name: TEST END
+        if: env.Release == 'true' && !failure() && !cancelled() 
+        run: |
+          exit 0
           
       - name: 1.File Name
         run: |
