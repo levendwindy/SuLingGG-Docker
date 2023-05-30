@@ -19,6 +19,8 @@ env:
   # 编译插件版   
   PLUGINver: tru
   Release: true
+  SOURCE_REPO: 'https://github.com/levenwindy/test1'
+  DESTINATION_REPO: 'git@github.com:levenwindy/test1.git'
   
   
 on:
@@ -99,41 +101,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@main
-        
-      - name: PUSH
-        env:
-          SOURCE_REPO: 'https://github.com/levenwindy/test1'
-          DESTINATION_REPO: 'git@github.com:levenwindy/test1.git'
-          SSH_KEY: ${{ secrets.SSH_KEY }}
-          SSH_PUB: ${{ secrets.SSH_PUB }}
-          EMAIL_GITHUB: ${{ secrets.EMAIL_GITHUB }}
-          NAME_GITHUB: ${{ secrets.NAME_GITHUB }}
-        run: |
-            if [ ! -f ~/.ssh ];then 
-              mkdir -p ~/.ssh  && echo '创建 .ssh 文件夹 成功 '
-            fi
-            echo "$SSH_KEY" > ~/.ssh/id_rsa && echo '创建 id_rsa 文件 成功'
-            chmod 600 ~/.ssh/id_rsa
-            echo "StrictHostKeyChecking no" >> ~/.ssh/config
-            git clone  "$SOURCE_REPO" && cd `basename "$SOURCE_REPO"` || ls -al
-            touch 3604.txt
-            git config --global user.email $EMAIL_GITHUB && echo 'git 邮箱设置成功 '
-            git config --global user.name  $NAME_GITHUB  && echo 'git 密码设置成功 '
-            #  git init
-            git add .
-            git commit -m "add 360.txt" && echo '提交信息成功 '
-            echo '1'
-            # git branch -M master
-            # 已经存在无法添加
-            git remote add origin_master $DESTINATION_REPO
-             # 查看远程仓库
-            echo "查看远程仓库"
-            git remote -v
-            echo '2'
-            # 查看本地文件
-            ls -al
-            git push -u origin_master master
-            echo '3'
 
       - name: Generate Variables
         id: env
@@ -444,11 +411,12 @@ jobs:
       
       - name: 2.tar release
         if: env.Release == 'true' && !failure() && !cancelled()
+          #tar zcvf RELEASE/$mini_BIN.tar.gz --exclude=openwrt/bin/targets/*/*/*squashfs-factory.bin  --exclude=openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin openwrt/bin/ || echo "$NAME is no directory BIN"
+          #tar zcvf RELEASE/$mini_FACTORY.tar.gz openwrt/bin/targets/*/*/*squashfs-factory.bin || echo "$NAME is no factory.bin"
+          #tar zcvf RELEASE/$mini_SYSUPGRADE.tar.gz openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin || echo "ERROR: $NAME is no sysupgrade"
         run: |
-          tar zcvf RELEASE/$mini_BIN.tar.gz --exclude=openwrt/bin/targets/*/*/*squashfs-factory.bin  --exclude=openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin openwrt/bin/ || echo "$NAME is no directory BIN"
-          tar zcvf RELEASE/$mini_FACTORY.tar.gz openwrt/bin/targets/*/*/*squashfs-factory.bin || echo "$NAME is no factory.bin"
-          tar zcvf RELEASE/$mini_SYSUPGRADE.tar.gz openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin || echo "ERROR: $NAME is no sysupgrade"
-
+          tar zcvf RELEASE/$mini_BIN.tar.gz openwrt/bin/  || echo "$NAME is no directory BIN"
+          
 ############################################################################################
       - name: 3.108M ssrplus
         if: env.PLUGINver == 'true'
@@ -515,11 +483,11 @@ jobs:
       
       - name: 3.tar release
         if: env.Release == 'true' && !failure() && !cancelled()
+          #tar zcvf RELEASE/$ssrplus_BIN.tar.gz --exclude=openwrt/bin/targets/*/*/*squashfs-factory.bin  --exclude=openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin openwrt/bin/ || echo "$NAME is no directory BIN"
+          #tar zcvf RELEASE/$ssrplus_FACTORY.tar.gz openwrt/bin/targets/*/*/*squashfs-factory.bin || echo "$NAME is no factory.bin"
+          #tar zcvf RELEASE/$ssrplus_SYSUPGRADE.tar.gz openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin || echo "ERROR: $NAME is no sysupgrade"
         run: |
-          tar zcvf RELEASE/$ssrplus_BIN.tar.gz --exclude=openwrt/bin/targets/*/*/*squashfs-factory.bin  --exclude=openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin openwrt/bin/ || echo "$NAME is no directory BIN"
-          tar zcvf RELEASE/$ssrplus_FACTORY.tar.gz openwrt/bin/targets/*/*/*squashfs-factory.bin || echo "$NAME is no factory.bin"
-          tar zcvf RELEASE/$ssrplus_SYSUPGRADE.tar.gz openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin || echo "ERROR: $NAME is no sysupgrade"
-            
+          tar zcvf RELEASE/$ssrplus_BIN.tar.gz openwrt/bin/ || echo "$NAME is no directory BIN"  
 ############################################################################################
       - name: 4.108M passwall
         if: env.PLUGINver == 'true'
@@ -586,11 +554,11 @@ jobs:
       
       - name: 4.tar release
         if: env.Release == 'true' && !failure() && !cancelled()
+         # tar zcvf RELEASE/$passwall_BIN.tar.gz --exclude=openwrt/bin/targets/*/*/*squashfs-factory.bin  --exclude=openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin openwrt/bin/ || echo "$NAME is no directory BIN"
+         # tar zcvf RELEASE/$passwall_FACTORY.tar.gz openwrt/bin/targets/*/*/*squashfs-factory.bin || echo "$NAME is no factory.bin"
+         # tar zcvf RELEASE/$passwall_SYSUPGRADE.tar.gz openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin || echo "ERROR: $NAME is no sysupgrade"
         run: |
-          tar zcvf RELEASE/$passwall_BIN.tar.gz --exclude=openwrt/bin/targets/*/*/*squashfs-factory.bin  --exclude=openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin openwrt/bin/ || echo "$NAME is no directory BIN"
-          tar zcvf RELEASE/$passwall_FACTORY.tar.gz openwrt/bin/targets/*/*/*squashfs-factory.bin || echo "$NAME is no factory.bin"
-          tar zcvf RELEASE/$passwall_SYSUPGRADE.tar.gz openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin || echo "ERROR: $NAME is no sysupgrade"
-          
+          tar zcvf RELEASE/$passwall_BIN.tar.gz openwrt/bin/ || echo "$NAME is no directory BIN"
 ############################################################################################
       - name: 5.108M openclash
         if: env.PLUGINver == 'true'
@@ -658,10 +626,11 @@ jobs:
       
       - name: 5.tar release
         if: env.Release == 'true' && !failure() && !cancelled()
+         # tar zcvf RELEASE/$openclash_BIN.tar.gz --exclude=openwrt/bin/targets/*/*/*squashfs-factory.bin  --exclude=openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin openwrt/bin/ || echo "$NAME is no directory BIN"
+         # tar zcvf RELEASE/$openclash_FACTORY.tar.gz openwrt/bin/targets/*/*/*squashfs-factory.bin || echo "$NAME is no factory.bin"
+         # tar zcvf RELEASE/$openclash_SYSUPGRADE.tar.gz openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin || echo "ERROR: $NAME is no sysupgrade"
         run: |
-          tar zcvf RELEASE/$openclash_BIN.tar.gz --exclude=openwrt/bin/targets/*/*/*squashfs-factory.bin  --exclude=openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin openwrt/bin/ || echo "$NAME is no directory BIN"
-          tar zcvf RELEASE/$openclash_FACTORY.tar.gz openwrt/bin/targets/*/*/*squashfs-factory.bin || echo "$NAME is no factory.bin"
-          tar zcvf RELEASE/$openclash_SYSUPGRADE.tar.gz openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin || echo "ERROR: $NAME is no sysupgrade"
+          tar zcvf RELEASE/$openclash_BIN.tar.gz openwrt/bin/ || echo "$NAME is no directory BIN"
 ############################################################################################
       - name: 6.108M openclash ssrplus passwall
         if: env.PLUGINver == 'true'
@@ -728,11 +697,12 @@ jobs:
       
       - name: 6.tar release
         if: env.Release == 'true' && !failure() && !cancelled()
+        #  tar zcvf RELEASE/$openclash_ssrplus_passwall_BIN.tar.gz --exclude=openwrt/bin/targets/*/*/*squashfs-factory.bin  --exclude=openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin openwrt/bin/ || echo "$NAME is no directory BIN"
+        #  tar zcvf RELEASE/$openclash_ssrplus_passwall_FACTORY.tar.gz openwrt/bin/targets/*/*/*squashfs-factory.bin || echo "$NAME is no factory.bin"
+        #  tar zcvf RELEASE/$openclash_ssrplus_passwall_SYSUPGRADE.tar.gz openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin || echo "ERROR: $NAME is no sysupgrade"
         run: |
-          tar zcvf RELEASE/$openclash_ssrplus_passwall_BIN.tar.gz --exclude=openwrt/bin/targets/*/*/*squashfs-factory.bin  --exclude=openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin openwrt/bin/ || echo "$NAME is no directory BIN"
-          tar zcvf RELEASE/$openclash_ssrplus_passwall_FACTORY.tar.gz openwrt/bin/targets/*/*/*squashfs-factory.bin || echo "$NAME is no factory.bin"
-          tar zcvf RELEASE/$openclash_ssrplus_passwall_SYSUPGRADE.tar.gz openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin || echo "ERROR: $NAME is no sysupgrade"
-      
+          tar zcvf RELEASE/$openclash_ssrplus_passwall_BIN.tar.gz openwrt/bin/ || echo "$NAME is no directory BIN"
+     
       - name: 1.Generate release tag
         if: env.Release == 'true' && !failure()  && !cancelled()
         id: tag
@@ -753,15 +723,42 @@ jobs:
           body_path: release.txt
           files: |
             RELEASE/*
+        
+      - name: PUSH
+        env:
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          SSH_PUB: ${{ secrets.SSH_PUB }}
+          EMAIL_GITHUB: ${{ secrets.EMAIL_GITHUB }}
+          NAME_GITHUB: ${{ secrets.NAME_GITHUB }}
+        run: |
+            if [ ! -f ~/.ssh ];then 
+              mkdir -p ~/.ssh  && echo '创建 .ssh 文件夹 成功 '
+            fi
+            echo "$SSH_KEY" > ~/.ssh/id_rsa && echo '创建 id_rsa 文件 成功'
+            chmod 600 ~/.ssh/id_rsa
+            echo "StrictHostKeyChecking no" >> ~/.ssh/config
+            git clone  "$SOURCE_REPO" && cd `basename "$SOURCE_REPO"` || ls -al
+            if [ ! -f 360T7 ];then 
+              mkdir 360T7
+            fi
+            mv RELEASE/* 360T7/
+            git config --global user.email $EMAIL_GITHUB && echo 'git 邮箱设置成功 '
+            git config --global user.name  $NAME_GITHUB  && echo 'git 密码设置成功 '
+            git add .
+            git commit -m "update" && echo '提交信息成功 '
+            git remote add origin_master $DESTINATION_REPO
+            git remote -v && echo "查看远程仓库"
+            ls -al
+            git push -u origin_master master
       
       - name: 2.Generate release tag2 latest
         if: env.Release == 'true' && !failure()  && !cancelled()
         id: tag2
         run: |
-          echo "::set-output name=release_tag2::$NAME-latest"
+          echo "::set-output name=release_tag2::latest"
           touch release.txt 
           echo "🔗 [Cowtransfer] " >> release.txt
-          echo "🔗 [WeTransfer] " >> release.txt
+          # echo "🔗 [WeTransfer] " >> release.txt
           echo "::set-output name=status::success"
 
       - name: 2.Upload firmware to release
@@ -773,7 +770,7 @@ jobs:
           tag_name: ${{ steps.tag2.outputs.release_tag2 }}
           body_path: release.txt
           files: |
-            RELEASE/*
-          
+            test1/360T7/*
+            `basename "$SOURCE_REPO"`/1
           
           
