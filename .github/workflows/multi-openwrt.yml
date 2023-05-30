@@ -121,7 +121,7 @@ jobs:
             echo "$SSH_KEY" > ~/.ssh/id_rsa && echo '创建 id_rsa 文件 成功'
             chmod 600 ~/.ssh/id_rsa
             echo "StrictHostKeyChecking no" >> ~/.ssh/config
-            git clone  "$SOURCE_REPO" && cd `basename "$SOURCE_REPO"` || ls -al
+            git clone  "$SOURCE_REPO" UPLOAD && cd UPLOAD || ls -al
             if [ ! -d 360T7 ];then 
               mkdir 360T7
             fi
@@ -154,8 +154,7 @@ jobs:
           tag_name: ${{ steps.tag2.outputs.release_tag2 }}
           body_path: release.txt
           files: |
-            test1/360T7/*
-            `basename "$SOURCE_REPO"`/1
+            UPLOAD/360T7/*
 
       - name: Generate Variables
         id: env
