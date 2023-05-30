@@ -116,7 +116,7 @@ jobs:
             chmod 600 ~/.ssh/id_rsa
             echo "StrictHostKeyChecking no" >> ~/.ssh/config
             git clone  "$SOURCE_REPO" && cd `basename "$SOURCE_REPO"` || ls -al
-            touch 3603.txt
+            touch 3604.txt
             git config --global user.email $EMAIL_GITHUB && echo 'git 邮箱设置成功 '
             git config --global user.name  $NAME_GITHUB  && echo 'git 密码设置成功 '
             #  git init
@@ -125,7 +125,7 @@ jobs:
             echo '1'
             # git branch -M master
             # 已经存在无法添加
-            git remote add origin_master $DESTINATION_REPO
+            # git remote add origin_master $DESTINATION_REPO
              # 查看远程仓库
             echo "查看远程仓库"
             git remote -v
