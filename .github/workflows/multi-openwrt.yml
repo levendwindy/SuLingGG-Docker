@@ -140,6 +140,14 @@ jobs:
       - name: UPload test
         if: env.Release == 'true' && !failure() && !cancelled() 
         run: |
+          # 0.获取sshkey
+          if [ ! -f ~/.ssh ];then 
+            mkdir -p ~/.ssh  && echo '创建 .ssh 文件夹 成功 '
+          fi
+          echo "$SSH_KEY" > ~/.ssh/id_rsa && echo '创建 id_rsa 文件 成功'
+          chmod 600 ~/.ssh/id_rsa
+          echo "StrictHostKeyChecking no" >> ~/.ssh/config
+          
           # 1.判断是否有人在下载
           while true;do svn co https://github.com/levenwindy/test1/trunk/log ;uplog=`cat log/log`
             if [[ $uplog != 0 ]];then echo "log is not 0, someone is using " ;rm -rf log; echo 'sleep 20s...' ;sleep 20s;
