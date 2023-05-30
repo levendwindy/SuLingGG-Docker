@@ -44,8 +44,11 @@ jobs:
             # 已经存在无法添加
             git remote add origin_master $DESTINATION_REPO
              # 查看远程仓库
+            echo "查看远程仓库"
             git remote -v
             echo '2'
+            # 查看本地文件
+            ls -al
             # git push -u origin_master master
             echo '3'
 
