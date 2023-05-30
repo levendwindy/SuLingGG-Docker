@@ -104,7 +104,8 @@ jobs:
       - name: TEST PUSH
         run: |
           mkdir RELEASE
-          touch RELEASE/2
+          echo '2' RELEASE/2
+          
       - name: PUSH
         if: env.Release == 'true' && !failure()  && !cancelled()
         env:
