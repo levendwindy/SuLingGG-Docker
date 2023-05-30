@@ -101,7 +101,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@main
-        
+      - name: TEST PUSH
+        run: |
+          mkdir RELEASE
+          touch RELEASE/2
       - name: PUSH
         if: env.Release == 'true' && !failure()  && !cancelled()
         env:
