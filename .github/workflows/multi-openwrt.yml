@@ -101,60 +101,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@main
-        
-      - name: TEST PUSH最终删除
-        run: |
-          mkdir RELEASE
-          echo '3' >> RELEASE/2
-          
-      - name: PUSH
-        if: env.Release == 'true' && !failure()  && !cancelled()
-        env:
-          SSH_KEY: ${{ secrets.SSH_KEY }}
-          SSH_PUB: ${{ secrets.SSH_PUB }}
-          EMAIL_GITHUB: ${{ secrets.EMAIL_GITHUB }}
-          NAME_GITHUB: ${{ secrets.NAME_GITHUB }}
-        run: |
-            if [ ! -f ~/.ssh ];then 
-              mkdir -p ~/.ssh  && echo '创建 .ssh 文件夹 成功 '
-            fi
-            echo "$SSH_KEY" > ~/.ssh/id_rsa && echo '创建 id_rsa 文件 成功'
-            chmod 600 ~/.ssh/id_rsa
-            echo "StrictHostKeyChecking no" >> ~/.ssh/config
-            git clone  "$SOURCE_REPO" UPLOAD && cd UPLOAD || ls -al
-            if [ ! -d 360T7 ];then 
-              mkdir 360T7
-            fi
-            mv $GITHUB_WORKSPACE/RELEASE/* 360T7/
-            git config --global user.email $EMAIL_GITHUB && echo 'git 邮箱设置成功 '
-            git config --global user.name  $NAME_GITHUB  && echo 'git 密码设置成功 '
-            git add .
-            git commit -m "update" && echo '提交信息成功 '
-            git remote add origin_master $DESTINATION_REPO
-            git remote -v && echo "查看远程仓库"
-            ls -al
-            git push -u origin_master master
-      
-      - name: 2.Generate release tag2 latest
-        if: env.Release == 'true' && !failure()  && !cancelled()
-        id: tag2
-        run: |
-          echo "::set-output name=release_tag2::latest"
-          touch release.txt 
-          echo "🔗 [Cowtransfer] " >> release.txt
-          # echo "🔗 [WeTransfer] " >> release.txt
-          echo "::set-output name=status::success"
-
-      - name: 2.Upload firmware to release
-        uses: softprops/action-gh-release@v1
-        if: steps.tag2.outputs.status == 'success' && !cancelled() && env.Release == 'true'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ steps.tag2.outputs.release_tag2 }}
-          body_path: release.txt
-          files: |
-            UPLOAD/360T7/*
 
       - name: Generate Variables
         id: env
@@ -757,26 +703,54 @@ jobs:
         #  tar zcvf RELEASE/$openclash_ssrplus_passwall_SYSUPGRADE.tar.gz openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin || echo "ERROR: $NAME is no sysupgrade"
         run: |
           tar zcvf RELEASE/$openclash_ssrplus_passwall_BIN.tar.gz openwrt/bin/ || echo "$NAME is no directory BIN"
-     
-      - name: 1.Generate release tag
-        if: env.Release == 'true' && !failure() && !cancelled()
-        id: tag
+          
+      - name: PUSH
+        if: env.Release == 'true' && !failure()  && !cancelled()
+        env:
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          SSH_PUB: ${{ secrets.SSH_PUB }}
+          EMAIL_GITHUB: ${{ secrets.EMAIL_GITHUB }}
+          NAME_GITHUB: ${{ secrets.NAME_GITHUB }}
         run: |
-          echo "::set-output name=release_tag::$NAME-$(date +"%Y.%m.%d")"
+            if [ ! -f ~/.ssh ];then 
+              mkdir -p ~/.ssh  && echo '创建 .ssh 文件夹 成功 '
+            fi
+            echo "$SSH_KEY" > ~/.ssh/id_rsa && echo '创建 id_rsa 文件 成功'
+            chmod 600 ~/.ssh/id_rsa
+            echo "StrictHostKeyChecking no" >> ~/.ssh/config
+            git clone  "$SOURCE_REPO" UPLOAD && cd UPLOAD || ls -al
+            if [ ! -d 360T7 ];then 
+              mkdir 360T7
+            fi
+            mv $GITHUB_WORKSPACE/RELEASE/* 360T7/
+            git config --global user.email $EMAIL_GITHUB && echo 'git 邮箱设置成功 '
+            git config --global user.name  $NAME_GITHUB  && echo 'git 密码设置成功 '
+            git add .
+            git commit -m "update" && echo '提交信息成功 '
+            git remote add origin_master $DESTINATION_REPO
+            git remote -v && echo "查看远程仓库"
+            ls -al
+            git push -u origin_master master
+      
+      - name: 2.Generate release tag2 latest
+        if: env.Release == 'true' && !failure()  && !cancelled()
+        id: tag2
+        run: |
+          echo "::set-output name=release_tag2::latest"
           touch release.txt 
           echo "🔗 [Cowtransfer] " >> release.txt
-          echo "🔗 [WeTransfer] " >> release.txt
+          # echo "🔗 [WeTransfer] " >> release.txt
           echo "::set-output name=status::success"
 
-      - name: 1.Upload firmware to release
+      - name: 2.Upload firmware to release
         uses: softprops/action-gh-release@v1
-        if: steps.tag.outputs.status == 'success' && !cancelled() && env.Release == 'true'
+        if: steps.tag2.outputs.status == 'success' && !cancelled() && env.Release == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.tag.outputs.release_tag }}
+          tag_name: ${{ steps.tag2.outputs.release_tag2 }}
           body_path: release.txt
           files: |
-            RELEASE/*
+            UPLOAD/360T7/*
           
           
