@@ -105,7 +105,7 @@ jobs:
       - name: TEST PUSH最终删除
         run: |
           mkdir RELEASE
-          echo '2' >> RELEASE/2
+          echo '3' >> RELEASE/2
           
       - name: PUSH
         if: env.Release == 'true' && !failure()  && !cancelled()
