@@ -32,7 +32,6 @@ jobs:
             chmod 600 ~/.ssh/id_rsa
             echo "StrictHostKeyChecking no" >> ~/.ssh/config
             git clone  "$SOURCE_REPO" && cd `basename "$SOURCE_REPO"` || ls -al
-            mkdir openwrt && cd openwrt
             touch 360.txt
             git config --global user.email $EMAIL_GITHUB && echo 'git 邮箱设置成功 '
             git config --global user.name  $NAME_GITHUB  && echo 'git 密码设置成功 '
