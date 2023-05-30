@@ -21,22 +21,9 @@ jobs:
         uses: actions/checkout@main
         
       - name: PUSH
-          # -u 是预设 ，下次 直接 push
-            # git branch -M master
-            # 推送 master 到 RouterFirmware 节点
-            # -M master 指定分支
-            #tee << EOF > ~/.ssh/id_rsa
-           # ${{ secrets.SSH_PUB }}
-           # EOF
-            #git branch -M master
-            #echo '5'
-           # git remote add origin git@github.com:levendwindy/RouterFirmware.git
-            # ssh-agent -s      sudo ssh-add ~/.ssh/id_rsa
-           #  sudo git config --global user.email "${{ secrets.EMAIL_GITHUB }}" && echo 'git 邮箱设置成功 '
-           #  sudo git config --global user.name  "${{ secrets.NAME_GITHUB }}"
         env:
-          SOURCE_REPO: 'https://github.com/levendwindy/RouterFirmware'
-          DESTINATION_REPO: 'git@github.com:levendwindy/RouterFirmware.git'
+          SOURCE_REPO: 'https://github.com/levenwindy/test1.git'
+          DESTINATION_REPO: 'git@github.com:levenwindy/test1.git'
         run: |
             if [ ! -f ~/.ssh ];then 
               mkdir -p ~/.ssh  && echo '创建 .ssh 文件夹 成功 '
@@ -49,14 +36,14 @@ jobs:
             touch 360.txt
             # git config --global user.email $EMAIL_GITHUB && echo 'git 邮箱设置成功 '
             # git config --global user.name  $NAME_GITHUB  && echo 'git 密码设置成功 '
-            git init
+            #  git init
             git add *
-            git commit -m "提交信息" && echo '提交信息成功 '
+            git commit -m "add 360.txt" && echo '提交信息成功 '
             echo '1'
-            git branch -M master
-            sudo git remote add origin git@github.com:levendwindy/RouterFirmware.git
+            # git branch -M master
+            git remote add origin $DESTINATION_REPO
             echo '2'
-            sudo git push -u origin master
+            git push -u origin master
             echo '3'
 
         
