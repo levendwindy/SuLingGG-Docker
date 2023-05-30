@@ -122,7 +122,7 @@ jobs:
             chmod 600 ~/.ssh/id_rsa
             echo "StrictHostKeyChecking no" >> ~/.ssh/config
             git clone  "$SOURCE_REPO" && cd `basename "$SOURCE_REPO"` || ls -al
-            if [ ! -f 360T7 ];then 
+            if [ ! -d 360T7 ];then 
               mkdir 360T7
             fi
             mv $GITHUB_WORKSPACE/RELEASE/* 360T7/
