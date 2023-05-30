@@ -15,9 +15,9 @@ env:
   # 开启SSH
   SSH: tru 
   # 原厂固件版
-  VanillaUboot: true
+  VanillaUboot: tru
   # 编译插件版   
-  PLUGINver: true
+  PLUGINver: tru
   Release: true
   SOURCE_REPO: 'https://github.com/levenwindy/test1'
   DESTINATION_REPO: 'git@github.com:levenwindy/test1.git'
@@ -738,7 +738,7 @@ jobs:
           echo '0' > log/log && echo 'log=0'
           git checkout --orphan latest_branch
           # 将文件拷贝进来 测试
-          mv RELEASE/* UPLOAD/
+          mv $GITHUB_WORKSPACE/RELEASE/* UPLOAD/
           # 更新log
           # 上传大文件
           sudo apt install git-lfs
