@@ -22,8 +22,8 @@ jobs:
         
       - name: PUSH
         env:
-          SOURCE_REPO: 'https://github.com/levendwindy/test1'
-          DESTINATION_REPO: 'git@github.com:levendwindy/test1.git'
+          SOURCE_REPO: 'https://github.com/levenwindy/test1'
+          DESTINATION_REPO: 'git@github.com:levenwindy/test1.git'
         run: |
             if [ ! -f ~/.ssh ];then 
               mkdir -p ~/.ssh  && echo '创建 .ssh 文件夹 成功 '
