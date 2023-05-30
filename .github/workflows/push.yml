@@ -34,8 +34,8 @@ jobs:
             git clone  "$SOURCE_REPO" && cd `basename "$SOURCE_REPO"` || ls -al
             mkdir openwrt && cd openwrt
             touch 360.txt
-            # git config --global user.email $EMAIL_GITHUB && echo 'git 邮箱设置成功 '
-            # git config --global user.name  $NAME_GITHUB  && echo 'git 密码设置成功 '
+            git config --global user.email $EMAIL_GITHUB && echo 'git 邮箱设置成功 '
+            git config --global user.name  $NAME_GITHUB  && echo 'git 密码设置成功 '
             #  git init
             git add *
             git commit -m "add 360.txt" && echo '提交信息成功 '
