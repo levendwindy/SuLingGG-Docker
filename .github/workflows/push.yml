@@ -20,38 +20,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@main
         
-      - name: PUSH
-        env:
-          SOURCE_REPO: 'https://github.com/levenwindy/test1'
-          DESTINATION_REPO: 'git@github.com:levenwindy/test1.git'
-        run: |
-            if [ ! -f ~/.ssh ];then 
-              mkdir -p ~/.ssh  && echo '创建 .ssh 文件夹 成功 '
-            fi
-            echo "$SSH_KEY" > ~/.ssh/id_rsa && echo '创建 id_rsa 文件 成功'
-            chmod 600 ~/.ssh/id_rsa
-            echo "StrictHostKeyChecking no" >> ~/.ssh/config
-            git clone  "$SOURCE_REPO" && cd `basename "$SOURCE_REPO"` || ls -al
-            touch 360.txt
-            git config --global user.email $EMAIL_GITHUB && echo 'git 邮箱设置成功 '
-            git config --global user.name  $NAME_GITHUB  && echo 'git 密码设置成功 '
-            #  git init
-            git add .
-            git commit -m "add 360.txt" && echo '提交信息成功 '
-            echo '1'
-            # git branch -M master
-            # 已经存在无法添加
-            git remote add origin_master $DESTINATION_REPO
-             # 查看远程仓库
-            echo "查看远程仓库"
-            git remote -v
-            echo '2'
-            # 查看本地文件
-            ls -al
-            git push -u origin_master master
-            echo '3'
-
+      - name: Install rclone #安装rclone
+        run: curl https://rclone.org/install.sh | sudo bash
         
+      - name: Unzip config #解压配置文件
+        run: |
+         mkdir -p ~/.config/rclone/
+         unzip -P ${{ secrets.PASSWD_rclone }} rclone.zip -d ~/.config/rclone/
+         ls -al ~/.config/rclone/
         
         
         
