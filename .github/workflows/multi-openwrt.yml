@@ -14,10 +14,10 @@ env:
   FAST: true
   # 开启SSH
   SSH: tru 
-  # 原厂固件版
-  VanillaUboot: tru
+  # 原厂固件版 
+  VanillaUboot: true
   # 编译插件版     
-  PLUGINver: tru
+  PLUGINver: true
   Release: true
   SOURCE_REPO: 'https://github.com/levenwindy/test1'
   DESTINATION_REPO: 'git@github.com:levenwindy/test1.git'
@@ -716,7 +716,7 @@ jobs:
         run: |
           # 1.判断是否有人在下载
           while true;do up_status=`cat /onedrive5g/log/log`
-            if [[ $up_status != 0 ]];then echo "log is not 0, someone is using " ; echo 'sleep 30s...' ;sleep 30s;
+            if [[ $up_status != 0 ]];then echo "log is not 0, someone is using " ; echo 'sleep 1m...' ;sleep 1m;
           else echo "up_status = $up_status"; echo "1" >  /onedrive5g/log/log ; break ;fi ;done
           echo "::set-output name=status::success"
           
