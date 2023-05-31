@@ -15,9 +15,9 @@ env:
   # 开启SSH
   SSH: tru 
   # 原厂固件版
-  VanillaUboot: true
+  VanillaUboot: tru
   # 编译插件版     
-  PLUGINver: true
+  PLUGINver: tru
   Release: true
   SSH_KEY: ${{ secrets.SSH_KEY }}
   SSH_PUB: ${{ secrets.SSH_PUB }}
@@ -498,8 +498,8 @@ jobs:
           if-no-files-found: ignore
       
       - name: 3.tar release
+         #  tar zcvf RELEASE/$ssrplus_BIN.tar.gz openwrt/bin/ || echo "$NAME is no directory BIN"  
         if: env.Release == 'true' && !failure() && !cancelled() && env.PLUGINver == 'true'
-          tar zcvf RELEASE/$ssrplus_BIN.tar.gz openwrt/bin/ || echo "$NAME is no directory BIN"  
         run: |
           tar zcvf RELEASE/$ssrplus_BIN.tar.gz --exclude=openwrt/bin/targets/*/*/*squashfs-factory.bin  --exclude=openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin openwrt/bin/ || echo "$NAME is no directory BIN"
           tar zcvf RELEASE/$ssrplus_FACTORY.tar.gz openwrt/bin/targets/*/*/*squashfs-factory.bin || echo "$NAME is no factory.bin"
