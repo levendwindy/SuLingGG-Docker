@@ -764,7 +764,9 @@ jobs:
           sudo apt install git-lfs
           git lfs install
           git lfs track '*.zip'
-          git lfs track '.gz'
+          git lfs track '*.tar'
+          git lfs track '*.rar'
+          git lfs track '*.gz'
           git add -A
           git commit -am "delte history git log，first commit"
           git branch -D master
