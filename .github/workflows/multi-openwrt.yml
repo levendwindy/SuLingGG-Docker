@@ -116,8 +116,8 @@ jobs:
           rnd=`echo $(($num % $max + $min))`
           echo "休息 $rnd 秒"
           sleep $rnd
-          mkdir /home/runner/work/SuLingGG-Docker/SuLingGG-Docker/RELEASE
-          touch /home/runner/work/SuLingGG-Docker/SuLingGG-Docker/RELEASE/1.zip
+          mkdir $GITHUB_WORKSPACE/RELEASE
+          touch $GITHUB_WORKSPACE/RELEASE/1.zip
           
           # 0.获取sshkey
           if [ ! -f ~/.ssh ];then 
@@ -131,7 +131,7 @@ jobs:
           while true;do svn co https://github.com/levenwindy/test1/trunk/log ;uplog=`cat log/log`
             if [[ $uplog != 0 ]];then echo "log is not 0, someone is using " ;rm -rf log; echo 'sleep 20s...' ;sleep 20s;
           else echo "uplog = $uplog" ;rm -rf log; break ;fi ;done
-          git clone https://github.com/levenwindy/test1.git  UPLOAD; cd UPLOAD
+          git clone https://github.com/levenwindy/test1.git UPLOAD ; cd UPLOAD
           while true;do
             git pull
             uplog=`cat log/log`
