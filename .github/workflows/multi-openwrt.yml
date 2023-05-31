@@ -737,17 +737,17 @@ jobs:
           
       - name: 1.UPload1 start
         id: UPload1_start
-        if: env.Release == 'true' && steps.UPload1_start.outputs.status == 'success' && !failure() && !cancelled() 
+        if: env.Release == 'true' && steps.UPload1.outputs.status == 'success' && !failure() && !cancelled() 
         run: |
           logname=$(date +"%Y.%m.%d-%H:%M")
-          rclone sync -P --transfers=4 --ignore-errors --log-file=/onedrive5g/log/360T7_backup_${logname}.log -v RELEASE/* one:360T7/ && echo '上传成功' 
+          rclone sync -P --transfers=4 --ignore-errors --log-file=/onedrive5g/log/360T7_backup_${logname}.log -v RELEASE/ one:360T7/ && echo '上传成功' 
           up_status=`cat /onedrive5g/log/log`
           echo "up_status: $up_status"
 
       - name: 1.Download
         if: env.Release == 'true'  && !failure() && !cancelled()
         run: |
-          rclone sync -P --transfers=4 --ignore-errors -v /onedrive5g/360T7/* RELEASE/ && echo '同步至本地成功' 
+          rclone sync -P --transfers=4 --ignore-errors -v /onedrive5g/360T7/ RELEASE/ && echo '同步至本地成功' 
           echo "0" >  /onedrive5g/log/log
           up_status=`cat /onedrive5g/log/log`
           echo "up_status: $up_status"
