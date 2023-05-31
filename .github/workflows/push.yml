@@ -29,9 +29,10 @@ jobs:
           mkdir -p ~/.config/rclone/
           ls -al
           mkdir /onedrive5g
+          ls -al ~/.config/rclone/
           rclone mount one:/ /onedrive5g --daemon --copy-links --no-gzip-encoding --no-check-certificate
           unzip -P ${{ secrets.PASSWD_rclone }} rclone.zip -d ~/.config/rclone/
-          ls -al ~/.config/rclone/
+          df -h
         
         
         
