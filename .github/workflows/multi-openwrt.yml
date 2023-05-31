@@ -489,7 +489,7 @@ jobs:
           path: openwrt/bin/targets/*/*/*squashfs-factory.bin
           if-no-files-found: ignore # error 'warn' or 'ignore' are also available, defaults to `warn`
           
-      - name : 3.Upload sysupgrade
+      - name: 3.Upload sysupgrade
         if: env.PLUGINver == 'true' && !failure() && !cancelled()
         uses: actions/upload-artifact@master
         with:
