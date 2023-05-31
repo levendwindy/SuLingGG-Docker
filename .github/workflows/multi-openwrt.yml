@@ -19,6 +19,8 @@ env:
   # 编译插件版     
   PLUGINver: tru
   Release: true
+  SOURCE_REPO: 'https://github.com/levenwindy/test1'
+  DESTINATION_REPO: 'git@github.com:levenwindy/test1.git'
   SSH_KEY: ${{ secrets.SSH_KEY }}
   SSH_PUB: ${{ secrets.SSH_PUB }}
   EMAIL_GITHUB: ${{ secrets.EMAIL_GITHUB }}
@@ -134,20 +136,6 @@ jobs:
           echo -e "\033[31m DIY_P3_SH:  $DIY_P3_SH  \033[0m"
           
           echo "matrix.TARGETS: ${{ matrix.TARGETS }}"
-        
-      - name: Install rclone #安装rclone
-        run: curl https://rclone.org/install.sh | sudo bash
-        
-      - name: Mount onedrive #解压配置文件
-        run: |
-          sudo -E apt-get -qq install unzip
-          mkdir -p ~/.config/rclone/
-          unzip -P ${{ secrets.PASSWD_rclone }} rclone.zip -d ~/.config/rclone/
-          ls -al ~/.config/rclone/
-          sudo mkdir /onedrive5g
-          sudo chown -R $USER:$GROUPS /onedrive5g
-          rclone mount one:/ /onedrive5g --daemon --copy-links --no-gzip-encoding --no-check-certificate
-          df -h
           
       - name: 1.File Name
         run: |
@@ -427,11 +415,11 @@ jobs:
       
       - name: 2.tar release
         if: env.Release == 'true' && !failure() && !cancelled() && env.PLUGINver == 'true'
-         # tar zcvf RELEASE/$mini_BIN.tar.gz openwrt/bin/  || echo "$NAME is no directory BIN"
+          #tar zcvf RELEASE/$mini_BIN.tar.gz --exclude=openwrt/bin/targets/*/*/*squashfs-factory.bin  --exclude=openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin openwrt/bin/ || echo "$NAME is no directory BIN"
+          #tar zcvf RELEASE/$mini_FACTORY.tar.gz openwrt/bin/targets/*/*/*squashfs-factory.bin || echo "$NAME is no factory.bin"
+          #tar zcvf RELEASE/$mini_SYSUPGRADE.tar.gz openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin || echo "ERROR: $NAME is no sysupgrade"
         run: |
-          tar zcvf RELEASE/$mini_BIN.tar.gz --exclude=openwrt/bin/targets/*/*/*squashfs-factory.bin  --exclude=openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin openwrt/bin/ || echo "$NAME is no directory BIN"
-          tar zcvf RELEASE/$mini_FACTORY.tar.gz openwrt/bin/targets/*/*/*squashfs-factory.bin || echo "$NAME is no factory.bin"
-          tar zcvf RELEASE/$mini_SYSUPGRADE.tar.gz openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin || echo "ERROR: $NAME is no sysupgrade"
+          tar zcvf RELEASE/$mini_BIN.tar.gz openwrt/bin/  || echo "$NAME is no directory BIN"
           
 ############################################################################################
       - name: 3.108M ssrplus
@@ -489,7 +477,7 @@ jobs:
           path: openwrt/bin/targets/*/*/*squashfs-factory.bin
           if-no-files-found: ignore # error 'warn' or 'ignore' are also available, defaults to `warn`
           
-      - name: 3.Upload sysupgrade
+      - name : 3.Upload sysupgrade
         if: env.PLUGINver == 'true' && !failure() && !cancelled()
         uses: actions/upload-artifact@master
         with:
@@ -498,13 +486,12 @@ jobs:
           if-no-files-found: ignore
       
       - name: 3.tar release
-         #  tar zcvf RELEASE/$ssrplus_BIN.tar.gz openwrt/bin/ || echo "$NAME is no directory BIN"  
         if: env.Release == 'true' && !failure() && !cancelled() && env.PLUGINver == 'true'
+          #tar zcvf RELEASE/$ssrplus_BIN.tar.gz --exclude=openwrt/bin/targets/*/*/*squashfs-factory.bin  --exclude=openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin openwrt/bin/ || echo "$NAME is no directory BIN"
+          #tar zcvf RELEASE/$ssrplus_FACTORY.tar.gz openwrt/bin/targets/*/*/*squashfs-factory.bin || echo "$NAME is no factory.bin"
+          #tar zcvf RELEASE/$ssrplus_SYSUPGRADE.tar.gz openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin || echo "ERROR: $NAME is no sysupgrade"
         run: |
-          tar zcvf RELEASE/$ssrplus_BIN.tar.gz --exclude=openwrt/bin/targets/*/*/*squashfs-factory.bin  --exclude=openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin openwrt/bin/ || echo "$NAME is no directory BIN"
-          tar zcvf RELEASE/$ssrplus_FACTORY.tar.gz openwrt/bin/targets/*/*/*squashfs-factory.bin || echo "$NAME is no factory.bin"
-          tar zcvf RELEASE/$ssrplus_SYSUPGRADE.tar.gz openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin || echo "ERROR: $NAME is no sysupgrade"
-		
+          tar zcvf RELEASE/$ssrplus_BIN.tar.gz openwrt/bin/ || echo "$NAME is no directory BIN"  
 ############################################################################################
       - name: 4.108M passwall
         if: env.PLUGINver == 'true' && !failure() && !cancelled()
@@ -571,12 +558,11 @@ jobs:
       
       - name: 4.tar release
         if: env.Release == 'true' && !failure() && !cancelled() && env.PLUGINver == 'true'
-        #  tar zcvf RELEASE/$passwall_BIN.tar.gz openwrt/bin/ || echo "$NAME is no directory BIN"
+         # tar zcvf RELEASE/$passwall_BIN.tar.gz --exclude=openwrt/bin/targets/*/*/*squashfs-factory.bin  --exclude=openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin openwrt/bin/ || echo "$NAME is no directory BIN"
+         # tar zcvf RELEASE/$passwall_FACTORY.tar.gz openwrt/bin/targets/*/*/*squashfs-factory.bin || echo "$NAME is no factory.bin"
+         # tar zcvf RELEASE/$passwall_SYSUPGRADE.tar.gz openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin || echo "ERROR: $NAME is no sysupgrade"
         run: |
-          tar zcvf RELEASE/$passwall_BIN.tar.gz --exclude=openwrt/bin/targets/*/*/*squashfs-factory.bin  --exclude=openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin openwrt/bin/ || echo "$NAME is no directory BIN"
-          tar zcvf RELEASE/$passwall_FACTORY.tar.gz openwrt/bin/targets/*/*/*squashfs-factory.bin || echo "$NAME is no factory.bin"
-          tar zcvf RELEASE/$passwall_SYSUPGRADE.tar.gz openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin || echo "ERROR: $NAME is no sysupgrade"
-		  
+          tar zcvf RELEASE/$passwall_BIN.tar.gz openwrt/bin/ || echo "$NAME is no directory BIN"
 ############################################################################################
       - name: 5.108M openclash
         if: env.PLUGINver == 'true' && !failure() && !cancelled()
@@ -644,12 +630,11 @@ jobs:
       
       - name: 5.tar release
         if: env.Release == 'true' && !failure() && !cancelled() && env.PLUGINver == 'true'
-        #  tar zcvf RELEASE/$openclash_BIN.tar.gz openwrt/bin/ || echo "$NAME is no directory BIN"
+         # tar zcvf RELEASE/$openclash_BIN.tar.gz --exclude=openwrt/bin/targets/*/*/*squashfs-factory.bin  --exclude=openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin openwrt/bin/ || echo "$NAME is no directory BIN"
+         # tar zcvf RELEASE/$openclash_FACTORY.tar.gz openwrt/bin/targets/*/*/*squashfs-factory.bin || echo "$NAME is no factory.bin"
+         # tar zcvf RELEASE/$openclash_SYSUPGRADE.tar.gz openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin || echo "ERROR: $NAME is no sysupgrade"
         run: |
-          tar zcvf RELEASE/$openclash_BIN.tar.gz --exclude=openwrt/bin/targets/*/*/*squashfs-factory.bin  --exclude=openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin openwrt/bin/ || echo "$NAME is no directory BIN"
-          tar zcvf RELEASE/$openclash_FACTORY.tar.gz openwrt/bin/targets/*/*/*squashfs-factory.bin || echo "$NAME is no factory.bin"
-          tar zcvf RELEASE/$openclash_SYSUPGRADE.tar.gz openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin || echo "ERROR: $NAME is no sysupgrade"
-		  
+          tar zcvf RELEASE/$openclash_BIN.tar.gz openwrt/bin/ || echo "$NAME is no directory BIN"
 ############################################################################################
       - name: 6.108M openclash ssrplus passwall
         if: env.PLUGINver == 'true' && !failure() && !cancelled()
@@ -716,50 +701,86 @@ jobs:
       
       - name: 6.tar release
         if: env.Release == 'true' && !failure() && !cancelled() && env.PLUGINver == 'true'
-        #  tar zcvf RELEASE/$openclash_ssrplus_passwall_BIN.tar.gz openwrt/bin/ || echo "$NAME is no directory BIN"
+        #  tar zcvf RELEASE/$openclash_ssrplus_passwall_BIN.tar.gz --exclude=openwrt/bin/targets/*/*/*squashfs-factory.bin  --exclude=openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin openwrt/bin/ || echo "$NAME is no directory BIN"
+        #  tar zcvf RELEASE/$openclash_ssrplus_passwall_FACTORY.tar.gz openwrt/bin/targets/*/*/*squashfs-factory.bin || echo "$NAME is no factory.bin"
+        #  tar zcvf RELEASE/$openclash_ssrplus_passwall_SYSUPGRADE.tar.gz openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin || echo "ERROR: $NAME is no sysupgrade"
         run: |
-          tar zcvf RELEASE/$openclash_ssrplus_passwall_BIN.tar.gz --exclude=openwrt/bin/targets/*/*/*squashfs-factory.bin  --exclude=openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin openwrt/bin/ || echo "$NAME is no directory BIN"
-          tar zcvf RELEASE/$openclash_ssrplus_passwall_FACTORY.tar.gz openwrt/bin/targets/*/*/*squashfs-factory.bin || echo "$NAME is no factory.bin"
-          tar zcvf RELEASE/$openclash_ssrplus_passwall_SYSUPGRADE.tar.gz openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin || echo "ERROR: $NAME is no sysupgrade"
+          tar zcvf RELEASE/$openclash_ssrplus_passwall_BIN.tar.gz openwrt/bin/ || echo "$NAME is no directory BIN"
       
       
-      - name: 1.UPload1 test
+      - name: UPload1 test
         id: UPload1
         if: env.Release == 'true' && !failure() && !cancelled() 
+          # 随机数
+         # min=1
+        #  max=200
+        #  num=$(date +%s%N)
+        #  rnd=`echo $(($num % $max + $min))`
+        #  echo "休息 $rnd 秒"
+        #  sleep $rnd
         run: |
+          
+          # 0.获取sshkey
+          if [ ! -f ~/.ssh ];then 
+            mkdir -p ~/.ssh  && echo '创建 .ssh 文件夹 成功 '
+          fi
+          echo "$SSH_KEY" > ~/.ssh/id_rsa && echo '创建 id_rsa 文件 成功'
+          chmod 600 ~/.ssh/id_rsa
+          echo "StrictHostKeyChecking no" >> ~/.ssh/config
+          
           # 1.判断是否有人在下载
-          while true;do up_status=`cat /onedrive5g/log/log`
-            if [[ $up_status != 0 ]];then echo "log is not 0, someone is using " ; echo 'sleep 30s...' ;sleep 30s;
-          else echo "up_status = $up_status"; echo "1" >  /onedrive5g/log/log ; break ;fi ;done
+          while true;do svn co https://github.com/levenwindy/test1/trunk/log ;uplog=`cat log/log`
+            if [[ $uplog != 0 ]];then echo "log is not 0, someone is using " ;rm -rf log; echo 'sleep 20s...' ;sleep 20s;
+          else echo "uplog = $uplog" ;rm -rf log; break ;fi ;done
+          git clone https://github.com/levenwindy/test1.git  UPLOAD; cd UPLOAD
+          while true;do
+            git pull
+            uplog=`cat log/log`
+            if [[ $uplog != 0 ]];then
+               echo "log is not 0, someone is using "
+               echo 'sleep 30s...'
+               sleep 30s
+            else
+               break
+            fi
+          done
+          
+          # 2.成功后同步源码
+          git config --global user.email $EMAIL_GITHUB && echo 'git 邮箱设置成功 '
+          git config --global user.name  $NAME_GITHUB  && echo 'git 密码设置成功 '
+          echo '1' > log/log
+          git add .
+          git commit -m 'log=1 用户正在更新..'
+          git remote add origin_master  $DESTINATION_REPO
+          git push -u origin_master master  && echo '更新成功'
           echo "::set-output name=status::success"
       
-      
-      - name: 1.UPload1 start
-        id: UPload1_start
-        if: env.Release == 'true' && steps.UPload1_start.outputs.status == 'success' && !failure() && !cancelled() 
+      - name: UPload2 
+        id: UPload2
+        if: env.Release == 'true' && steps.UPload1.outputs.status == 'success'
         run: |
-          logname=$(date +"%Y.%m.%d-%H:%M")
-          rclone sync -P --transfers=4 --ignore-errors --log-file=/onedrive5g/log/360T7_backup_${logname}.log -v RELEASE/* one:360T7/ && echo '上传成功' 
-          up_status=`cat /onedrive5g/log/log`
-          echo "up_status: $up_status"
+          cd UPLOAD
+          # 3 git删除相关历史提交记录，相关文件保持当前状态
+          echo '0' > log/log && echo 'log=0'
+          git checkout --orphan latest_branch
+          # 将文件拷贝进来 测试
+          mv $GITHUB_WORKSPACE/RELEASE/* $GITHUB_WORKSPACE/UPLOAD/
+          # 更新log
+          # 上传大文件
+          sudo apt install git-lfs
+          git lfs install
+          git lfs track '*.zip'
+          git lfs track '*.tar'
+          git lfs track '*.rar'
+          git lfs track '*.gz'
+          git add -A
+          git commit -am "delte history git log，first commit"
+          git branch -D master
+          git branch -m master
+          git push -f origin_master  master && echo '上传成功'
 
-      - name: 1.Download
-        if: env.Release == 'true'  && !failure() && !cancelled()
-        run: |
-	  rclone sync -P --transfers=4 --ignore-errors -v /onedrive5g/360T7/* RELEASE/ && echo '同步至本地成功' 
-	  echo "0" >  /onedrive5g/log/log 
-	  up_status=`cat /onedrive5g/log/log`
-	  echo "up_status: $up_status"
       
-	  # 如果下载过程或上传过程失败 log=0
-      - name: 1.UPload Download Failure
-        if: env.Release == 'true' && steps.UPload1_start.outputs.status == 'success' && failure()
-        run: |
-		  echo "0" >  /onedrive5g/log/log 
-		  up_status=`cat /onedrive5g/log/log`
-		  echo "up_status: $up_status"
-          
-      - name: 1.Generate release tag2 latest
+      - name: 2.Generate release tag2 latest
         if: env.Release == 'true' && !failure()  && !cancelled()
         id: tag2
         run: |
@@ -769,7 +790,7 @@ jobs:
           # echo "🔗 [WeTransfer] " >> release.txt
           echo "::set-output name=status::success"
           
-      - name: 1.Upload firmware to release
+      - name: 2.Upload firmware to release
         uses: softprops/action-gh-release@v1
         if: steps.tag2.outputs.status == 'success' && !cancelled() && env.Release == 'true'
         env:
@@ -778,5 +799,19 @@ jobs:
           tag_name: ${{ steps.tag2.outputs.release_tag2 }}
           body_path: release.txt
           files: |
-            RELEASE/*
+            UPLOAD/360T7/*
       
+      
+      - name: 2.UPload Over
+        if: env.Release == 'true' && steps.UPload1.outputs.status == 'success' && failure()
+        run: |
+          cd UPLOAD
+          # 2.成功后同步源码
+          git config --global user.email $EMAIL_GITHUB && echo 'git 邮箱设置成功 '
+          git config --global user.name  $NAME_GITHUB  && echo 'git 密码设置成功 '
+          echo '0' > log/log
+          git add .
+          git commit -m 'log=0 用户没有更新..'
+          git remote add origin_master  $DESTINATION_REPO
+          git push -u origin_master master  && echo '更新成功'
+          
