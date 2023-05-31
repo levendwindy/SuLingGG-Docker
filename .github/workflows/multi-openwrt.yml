@@ -711,14 +711,14 @@ jobs:
       - name: UPload1 test
         id: UPload1
         if: env.Release == 'true' && !failure() && !cancelled() 
-        run: |
           # 随机数
-          min=1
-          max=200
-          num=$(date +%s%N)
-          rnd=`echo $(($num % $max + $min))`
-          echo '休息 $rnd 秒'
-          sleep $rnd
+         # min=1
+        #  max=200
+        #  num=$(date +%s%N)
+        #  rnd=`echo $(($num % $max + $min))`
+        #  echo '休息 $rnd 秒'
+        #  sleep $rnd
+        run: |
           
           # 0.获取sshkey
           if [ ! -f ~/.ssh ];then 
