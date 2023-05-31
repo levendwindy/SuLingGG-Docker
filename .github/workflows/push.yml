@@ -25,6 +25,7 @@ jobs:
         
       - name: Unzip config #解压配置文件
         run: |
+         sudo apt intall -y zip unzip
          mkdir -p ~/.config/rclone/
          unzip -P ${{ secrets.PASSWD_rclone }} rclone.zip -d ~/.config/rclone/
          ls -al ~/.config/rclone/
