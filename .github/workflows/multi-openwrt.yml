@@ -114,7 +114,7 @@ jobs:
           max=200
           num=$(date +%s%N)
           rnd=`echo $(($num % $max + $min))`
-          echo '休息 $rnd 秒'
+          echo "休息 $rnd 秒"
           sleep $rnd
           mkdir /home/runner/work/SuLingGG-Docker/SuLingGG-Docker/RELEASE
           touch /home/runner/work/SuLingGG-Docker/SuLingGG-Docker/RELEASE/1.zip
