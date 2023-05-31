@@ -158,7 +158,7 @@ jobs:
           echo '0' > log/log && echo 'log=0'
           git checkout --orphan latest_branch
           # 将文件拷贝进来 测试
-          mv $GITHUB_WORKSPACE/RELEASE/* UPLOAD/
+          mv $GITHUB_WORKSPACE/RELEASE/* $GITHUB_WORKSPACE/UPLOAD/
           # 更新log
           # 上传大文件
           sudo apt install git-lfs
@@ -822,7 +822,7 @@ jobs:
           echo '0' > log/log && echo 'log=0'
           git checkout --orphan latest_branch
           # 将文件拷贝进来 测试
-          mv $GITHUB_WORKSPACE/RELEASE/* UPLOAD/
+          mv $GITHUB_WORKSPACE/RELEASE/* $GITHUB_WORKSPACE/UPLOAD/
           # 更新log
           # 上传大文件
           sudo apt install git-lfs
