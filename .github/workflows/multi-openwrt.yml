@@ -13,11 +13,11 @@ env:
   # 快速编译
   FAST: true
   # 开启SSH
-  SSH: tru 
+  SSH: tru
   # 原厂固件版 
-  VanillaUboot: tru
+  VanillaUboot: true
   # 编译插件版     
-  PLUGINver: tru
+  PLUGINver: true
   Release: true
   SOURCE_REPO: 'https://github.com/levenwindy/test1'
   DESTINATION_REPO: 'git@github.com:levenwindy/test1.git'
