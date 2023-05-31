@@ -28,6 +28,8 @@ jobs:
           sudo -E apt-get -qq install  zip unzip
           mkdir -p ~/.config/rclone/
           ls -al
+          mkdir /onedrive5g
+          rclone mount one:/ /onedrive5g --daemon --copy-links --no-gzip-encoding --no-check-certificate
           unzip -P ${{ secrets.PASSWD_rclone }} rclone.zip -d ~/.config/rclone/
           ls -al ~/.config/rclone/
         
