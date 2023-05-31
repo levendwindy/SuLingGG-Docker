@@ -137,11 +137,12 @@ jobs:
           
           echo "matrix.TARGETS: ${{ matrix.TARGETS }}"
         
-      - name: Install rclone #安装rclone
-        run: curl https://rclone.org/install.sh | sudo bash
+    #  - name: Install rclone #安装rclone
+      #  run: curl -s https://rclone.org/install.sh | sudo bash
         
-      - name: Mount onedrive #解压配置文件
+      - name: 1.Mount onedrive #解压配置文件
         run: |
+          curl -s https://rclone.org/install.sh | sudo bash
           sudo -E apt-get -qq install unzip
           mkdir -p ~/.config/rclone/
           unzip -P ${{ secrets.PASSWD_rclone }} rclone.zip -d ~/.config/rclone/
