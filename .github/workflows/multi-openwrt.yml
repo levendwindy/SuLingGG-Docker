@@ -14,7 +14,7 @@ env:
   FAST: true
   # 开启SSH 
   SSH: tru
-  # 原厂固件版  
+  # 原厂固件版 
   VanillaUboot: true
   # 编译插件版     
   PLUGINver: true
