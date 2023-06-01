@@ -754,8 +754,11 @@ jobs:
         id: UPload1_start
         if: env.Release == 'true' && steps.UPload1.outputs.status == 'success' && !failure() && !cancelled() 
         run: |
-          logname=$(date +"%Y.%m.%d-%H:%M")
-          rclone copy -P --transfers=4 --ignore-errors --log-file=/onedrive5g/log/360T7_backup_${logname}.log -v RELEASE/ one:360T7/ && echo '上传成功' 
+          logname=$(date +"%Y.%m.%d_%H.%M")
+          cp /onedrive5g/log/360T7_backup.log .
+          rclone copy -P --transfers=4 --ignore-errors --log-file=new.log -v RELEASE/ one:360T7/ && echo '上传成功' 
+          # 合并日志
+          cat  360T7_backup.log new.log > /onedrive5g/log/360T7_backup.log
           up_status=`cat /onedrive5g/log/log.txt`
           echo "up_status: $up_status"
           echo "0" >  /onedrive5g/log/log.txt
