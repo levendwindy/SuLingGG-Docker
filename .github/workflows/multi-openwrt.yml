@@ -253,7 +253,7 @@ jobs:
         if: ${{ failure() }}
         id: Compile_failure_1
         run: |
-          cd openwrt && make -j1 V=s 
+          cd openwrt && make -j1 V=99 
 
       - name: 1.Check space usage
         if: (!cancelled())
@@ -327,7 +327,7 @@ jobs:
         if: env.PLUGINver == 'true' && failure()
         id: Compile_failure_0
         run: |
-          cd openwrt && make -j1 V=s 
+          cd openwrt && make -j1 V=99 
 
           
       - name : 0.Upload Vanilla BIN stock（非108M 原厂Uboot）
@@ -401,7 +401,7 @@ jobs:
         if: env.PLUGINver == 'true' && failure()
         id: Compile_failure_2
         run: |
-          cd openwrt && make -j1 V=s 
+          cd openwrt && make -j1 V=99 
 
           
       - name : 2.Upload Vanilla BIN
@@ -451,6 +451,7 @@ jobs:
         run: |
           cd openwrt 
           ./REVISECONFIG.sh  ttyd filetransfer ssr-plus
+          cat .config
 
       - name: 3.Download package
         if: env.PLUGINver == 'true' && !failure() && !cancelled()
@@ -473,7 +474,7 @@ jobs:
         if: env.PLUGINver == 'true' && failure()
         id: Compile_failure_3
         run: |
-          cd openwrt && make -j1 V=s 
+          cd openwrt && make -j1 V=99 
 
           
       - name : 3.Upload Vanilla BIN
@@ -523,6 +524,7 @@ jobs:
         run: |
           cd openwrt 
           ./REVISECONFIG.sh  ttyd filetransfer passwall
+          cat .config
 
       - name: 4.Download package
         if: env.PLUGINver == 'true' && !failure() && !cancelled()
@@ -545,7 +547,7 @@ jobs:
         if: env.PLUGINver == 'true' && failure()
         id: Compile_failure_4
         run: |
-          cd openwrt && make -j1 V=s 
+          cd openwrt && make -j1 V=99 
 
           
       - name : 4.Upload Vanilla BIN
@@ -617,7 +619,7 @@ jobs:
         if: env.PLUGINver == 'true' && failure()
         id: Compile_failure_5
         run: |
-          cd openwrt && make -j1 V=s 
+          cd openwrt && make -j1 V=99 
 
           
       - name : 5.Upload Vanilla BIN
@@ -690,7 +692,7 @@ jobs:
         if: env.PLUGINver == 'true' && failure()
         id: Compile_failure_6
         run: |
-          cd openwrt && make -j1 V=s 
+          cd openwrt && make -j1 V=99 
           
       - name : 6.Upload Vanilla BIN
         if: env.PLUGINver == 'true' && !failure() && !cancelled()
