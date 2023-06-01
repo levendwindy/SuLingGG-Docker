@@ -12,7 +12,7 @@ env:
   ENVIRONMENT: true
   # 快速编译
   FAST: true
-  # 开启SSH
+  # 开启SSH 
   SSH: tru
   # 原厂固件版  
   VanillaUboot: tru
