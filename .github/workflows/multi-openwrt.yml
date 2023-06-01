@@ -730,8 +730,10 @@ jobs:
         if: env.Release == 'true' && !failure() && !cancelled() 
         run: |
           # 1.判断是否有人在下载
-          while true;do up_status=`cat /onedrive5g/log/log`
-            if [[ $up_status != 0 ]];then echo "log is not 0, someone is using " ; echo 'sleep 1m...' ;sleep 1m;
+          times=0
+          while true;do up_status=`cat /onedrive5g/log/log`  ||  up_status=1
+            if [[ $up_status != 0 ]];then echo "log is not 0, someone is using " ; echo 'sleep 2m...' ;sleep 2m;let times++
+              if [[ $times -ge 10 ]];then echo "超过30分钟" ; echo "0" >  /onedrive5g/log/log ;fi
           else echo "up_status = $up_status"; echo "1" >  /onedrive5g/log/log ; break ;fi ;done
           echo "::set-output name=status::success"
           
