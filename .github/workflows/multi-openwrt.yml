@@ -743,6 +743,8 @@ jobs:
           rclone copy -P --transfers=4 --ignore-errors --log-file=/onedrive5g/log/360T7_backup_${logname}.log -v RELEASE/ one:360T7/ && echo '上传成功' 
           up_status=`cat /onedrive5g/log/log`
           echo "up_status: $up_status"
+          echo "0" >  /onedrive5g/log/log
+          echo "up_status: $up_status"
 
     #  - name: 1.Download
     #    if: env.Release == 'true'  && !failure() && !cancelled()
