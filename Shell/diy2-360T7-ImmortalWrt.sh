@@ -36,7 +36,7 @@ sed -i 's/time.cloudflare.com/cn.ntp.org.cn/g'  package/base-files/files/bin/con
 sed -i 's/pool.ntp.org/cn.pool.ntp.org/g'  package/base-files/files/bin/config_generate
 
 # 替换源 
-# sed -i 's,mirrors.vsean.net,mirrors.cloud.tencent.com,g'  package/emortal/default-settings/files/99-default-settings-chinese
+sed -i 's,mirrors.vsean.net/openwrt,mirrors.pku.edu.cn/immortalwrt,g'  package/emortal/default-settings/files/99-default-settings-chinese
 
 FIREWALL_21_3(){
   echo '替换 mtk  drivers  mt_wifi'
