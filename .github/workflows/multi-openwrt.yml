@@ -15,9 +15,9 @@ env:
   # 开启SSH 
   SSH: tru
   # 原厂固件版 
-  VanillaUboot: true
+  VanillaUboot: tru
   # 编译插件版     
-  PLUGINver: true
+  PLUGINver: tru
   Release: true
   SOURCE_REPO: 'https://github.com/levenwindy/test1'
   DESTINATION_REPO: 'git@github.com:levenwindy/test1.git'
@@ -758,7 +758,7 @@ jobs:
           cp /onedrive5g/log/360T7_backup.log .
           rclone copy -P --transfers=4 --ignore-errors --log-file=new.log -v RELEASE/ one:360T7/ && echo '上传成功' 
           # 合并日志
-          cat  360T7_backup.log new.log > /onedrive5g/log/360T7_backup.log
+          cat new.log 360T7_backup.log > /onedrive5g/log/360T7_backup.log
           up_status=`cat /onedrive5g/log/log.txt`
           echo "up_status: $up_status"
           echo "0" >  /onedrive5g/log/log.txt
