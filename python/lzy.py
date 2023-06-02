@@ -1,4 +1,8 @@
 #!/usr/bin/python
+#
+# Copyright (c) 2023 @weigefenxiang
+#
+
 import re
 import datetime
 import sys
