@@ -16,7 +16,7 @@ env:
   SSH: tru
   # 原厂固件版 
   VanillaUboot: true
-  # 编译插件版     
+  # 编译插件版      
   PLUGINver: true
   Release: true
   SOURCE_REPO: 'https://github.com/levenwindy/test1'
