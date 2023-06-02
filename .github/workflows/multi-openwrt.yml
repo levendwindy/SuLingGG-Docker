@@ -324,7 +324,7 @@ jobs:
           [[ $NPROC -eq 0 ]] && make -j$(nproc) || make -j$NPROC
         
       - name: 0.Compile failure
-        if: env.PLUGINver == 'true' && failure()
+        if: env.VanillaUboot == 'true' && env.PLUGINver == 'true' && failure()
         id: Compile_failure_0
         run: |
           cd openwrt && make -j1 V=99 
