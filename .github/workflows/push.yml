@@ -11,7 +11,9 @@ env:
   SSH_PUB: ${{ secrets.SSH_PUB }}
   EMAIL_GITHUB: ${{ secrets.EMAIL_GITHUB }}
   NAME_GITHUB: ${{ secrets.NAME_GITHUB }}
-
+  LZ_YLOGIN: ${{ secrets.LZ_YLOGIN }}
+  LZ_PHPDISK: ${{ secrets.LZ_PHPDISK }}
+  
 jobs:
   build:
     #runs-on: ubuntu-latest
@@ -23,17 +25,17 @@ jobs:
       - name: Install rclone #安装rclone
         run: curl https://rclone.org/install.sh | sudo bash
         
-      - name: Unzip config #解压配置文件
+      - name: Lanzou 蓝奏云
         run: |
-          sudo -E apt-get -qq install  zip unzip
-          mkdir -p ~/.config/rclone/
+          which python
+          which pip
+          pip -V
+          python -V
+          pip install lanzou-api
           ls -al
-          unzip -P ${{ secrets.PASSWD_rclone }} rclone.zip -d ~/.config/rclone/
-          ls -al ~/.config/rclone/
-          sudo mkdir /onedrive5g
-          sudo chown -R $USER:$GROUPS /onedrive5g
-          rclone mount one:/ /onedrive5g --daemon --copy-links --no-gzip-encoding --no-check-certificate
-          df -h
+          python python/lzy.py $LZ_YLOGIN $LZ_PHPDISK
+          
+          
         
         
         
