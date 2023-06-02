@@ -41,6 +41,7 @@ on:
 jobs:
   Config:
     name: Generate Config
+    permissions: write-all
     runs-on: ubuntu-latest
     outputs:
       TARGETS: ${{ steps.find-targets.outputs.TARGETS }}
