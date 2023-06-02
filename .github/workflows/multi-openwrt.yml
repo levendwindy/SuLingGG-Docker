@@ -160,7 +160,7 @@ jobs:
           
       - name: 1.DIY_P3_SH
         run: |
-          if [ -f $DIY_P3_SH ];then
+          if [ -e Shell/$DIY_P3_SH ];then
               cd Shell 
               ls -al
               chmod +x $DIY_P3_SH 
