@@ -8,7 +8,7 @@ env:
   NPROC: 0
   # 构建原版Uboot
   Vanilla: true
-  # 环境 true
+  # 环境 true 
   ENVIRONMENT: true
   # 快速编译
   FAST: true
