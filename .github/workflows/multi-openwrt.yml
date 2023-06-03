@@ -19,7 +19,7 @@ env:
   # 原厂固件版  
   VanillaUboot: tru
   # 编译插件版
-  PLUGINver: tru
+  PLUGINver: true
   # 发布
   Release: true
   # 同步至网盘
