@@ -228,13 +228,13 @@ jobs:
           $GITHUB_WORKSPACE/Shell/$DIY_P2_SH
           cat .config
 
-      - name: SSH2
-        if: env.SSH2 == 'true' && env.SSHNAME == env.NAME
+      - name: SSH1
+        if: env.SSH1 == 'true' && env.SSHNAME == env.NAME
         run: |
           sleep 30m
 
-      - name: SSH1
-        if: env.SSH1 == 'true' && env.SSHNAME == env.NAME
+      - name: SSH2
+        if: env.SSH2 == 'true' && env.SSHNAME == env.NAME
         uses: csexton/debugger-action@master
           
       - name: FAST Initialization Environment
