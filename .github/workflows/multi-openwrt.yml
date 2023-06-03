@@ -11,7 +11,7 @@ env:
   # 环境 true 
   ENVIRONMENT: true
   # 快速编译
-  FAST: tru
+  FAST: true
   # 开启SSH 
   SSH1: tru
   SSH2: tru
