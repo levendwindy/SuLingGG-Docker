@@ -14,7 +14,7 @@ env:
   FAST: true
   # 开启SSH 
   SSH: tru
-  SSH2: tru
+  SSH2: true
   SSHNAME: 'padavanonly'
   # 原厂固件版  
   VanillaUboot: tru
@@ -54,16 +54,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@main
-        
-      - name: SSH
-        if: env.SSH == 'true'
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}
-          port: ${{ secrets.PORT }}
-          script: whoami
         
       - name: Find Targets
         id: find-targets
@@ -241,6 +231,11 @@ jobs:
           mv $CONFIG_FILE .config
           $GITHUB_WORKSPACE/Shell/$DIY_P2_SH
           cat .config
+
+      - name: SSH2
+        if: env.SSH2 == 'true' && env.SSHNAME == env.NAME
+        run: |
+          sleep 30m
           
       - name: FAST Initialization Environment
         if: env.ENVIRONMENT == 'true' && env.FAST == 'true'
