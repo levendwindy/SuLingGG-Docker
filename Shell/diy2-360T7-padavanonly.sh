@@ -37,3 +37,10 @@ sed -i 's/pool.ntp.org/cn.pool.ntp.org/g'  package/base-files/files/bin/config_g
 
 # 替换源 
 sed -i 's,mirrors.vsean.net/openwrt,mirrors.pku.edu.cn/immortalwrt,g'  package/emortal/default-settings/files/99-default-settings-chinese
+
+# 删除以中文字符开头的行
+cp target/linux/mediatek/files-5.4/arch/arm64/boot/dts/mediatek/mt7981-h3c-nx30pro.dts mt7981-h3c-nx30pro.dts
+sed -r  '/^([\x81-\xFE][\x40-\xFE]).*/d' mt7981-h3c-nx30pro.dts > target/linux/mediatek/files-5.4/arch/arm64/boot/dts/mediatek/mt7981-h3c-nx30pro.dts && rm mt7981-h3c-nx30pro.dts
+cat target/linux/mediatek/files-5.4/arch/arm64/boot/dts/mediatek/mt7981-h3c-nx30pro.dts
+
+
