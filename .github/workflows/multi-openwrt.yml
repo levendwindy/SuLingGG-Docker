@@ -11,10 +11,10 @@ env:
   # 环境 true 
   ENVIRONMENT: true
   # 快速编译
-  FAST: true
+  FAST: tru
   # 开启SSH 
   SSH1: true
-  SSH2: true
+  SSH2: tru
   SSHNAME: 'padavanonly'
   # 原厂固件版  
   VanillaUboot: tru
