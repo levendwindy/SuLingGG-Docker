@@ -2,7 +2,7 @@ name: Multi-OpenWrt Images
  
 env:
   TZ: Asia/Shanghai
-  # 下载线程数 DOWNLOAD  
+  # 下载线程数 DOWNLOAD   
   DOWNLOAD: 8
   # 编译核心数 0 默认最多 
   NPROC: 0
@@ -17,7 +17,7 @@ env:
   # 原厂固件版  
   VanillaUboot: tru
   # 编译插件版        
-  PLUGINver: tru
+  PLUGINver: true
   Release: true
   SOURCE_REPO: 'https://github.com/levenwindy/test1'
   DESTINATION_REPO: 'git@github.com:levenwindy/test1.git'
