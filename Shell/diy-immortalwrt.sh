@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/bash
 
 # 设定LAN口 ip dns
 # sed -i "/exit 0/i\uci set network.lan.ipaddr='192.168.1.210'" package/lean/default-settings/files/zzz-default-settings 
