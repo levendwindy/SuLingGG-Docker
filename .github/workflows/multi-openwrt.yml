@@ -202,9 +202,8 @@ jobs:
           ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
           
       - name: Load custom feeds
-        working-directory: /workdir
         run: |
-          # [ -e config/$FEEDS_CONF ] && cp config/$FEEDS_CONF openwrt/feeds.conf.default
+          # [ -f config/$FEEDS_CONF ] && cp config/$FEEDS_CONF openwrt/feeds.conf.default
           chmod +x Shell/$DIY_P1_SH
           cd openwrt
           echo '---------------------------------------------------------------'
