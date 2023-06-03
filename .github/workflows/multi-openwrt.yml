@@ -146,10 +146,6 @@ jobs:
         env:
           NGROK_TOKEN: ${{ secrets.NGROK_TOKEN_1 }}
           USER_PASS: ${{ secrets.NGROK_USER_PASS_1 }}
-
-      - name: SSH2
-        if: env.SSH2 == 'true' && env.SSHNAME == env.NAME
-        uses: csexton/debugger-action@master
         
       - name: 1.Mount onedrive #解压配置文件
         if: env.OneDrive == 'true'
@@ -234,8 +230,7 @@ jobs:
 
       - name: SSH2
         if: env.SSH2 == 'true' && env.SSHNAME == env.NAME
-        run: |
-          sleep 30m
+        uses: csexton/debugger-action@master
           
       - name: FAST Initialization Environment
         if: env.ENVIRONMENT == 'true' && env.FAST == 'true'
