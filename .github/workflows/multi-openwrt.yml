@@ -13,7 +13,7 @@ env:
   # 快速编译
   FAST: tru
   # 开启SSH 
-  SSH1: true
+  SSH1: tru
   SSH2: tru
   SSHNAME: 'padavanonly'
   # 原厂固件版  
