@@ -13,7 +13,7 @@ env:
   # 快速编译
   FAST: true
   # 开启SSH 
-  SSH: tru
+  SSH1: true
   SSH2: true
   SSHNAME: 'padavanonly'
   # 原厂固件版  
@@ -139,13 +139,13 @@ jobs:
           # After sign up on the https://ngrok.com/ 
           # You can find this token here: https://dashboard.ngrok.com/get-started/setup
       - name: SSH via Ngrok
-        if: env.SSH == 'true' && env.SSHNAME == env.NAME
-        run: |
-          curl -sL https://gist.githubusercontent.com/retyui/7115bb6acf151351a143ec8f96a7c561/raw/7099b9db76729dc5761da72aa8525f632d8875c9/debug-github-actions.sh | bash
-          sleep 30m
+        if: env.SSH1 == 'true' && env.SSHNAME == env.NAME
         env:
           NGROK_TOKEN: ${{ secrets.NGROK_TOKEN_1 }}
           USER_PASS: ${{ secrets.NGROK_USER_PASS_1 }}
+        run: |
+          curl -sL https://gist.githubusercontent.com/retyui/7115bb6acf151351a143ec8f96a7c561/raw/7099b9db76729dc5761da72aa8525f632d8875c9/debug-github-actions.sh | bash
+
         
       - name: 1.Mount onedrive #解压配置文件
         if: env.OneDrive == 'true'
@@ -230,6 +230,11 @@ jobs:
 
       - name: SSH2
         if: env.SSH2 == 'true' && env.SSHNAME == env.NAME
+        run: |
+          sleep 30m
+
+      - name: SSH1
+        if: env.SSH1 == 'true' && env.SSHNAME == env.NAME
         uses: csexton/debugger-action@master
           
       - name: FAST Initialization Environment
