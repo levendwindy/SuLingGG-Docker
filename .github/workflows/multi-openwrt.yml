@@ -16,9 +16,12 @@ env:
   SSH: tru
   # 原厂固件版  
   VanillaUboot: tru
-  # 编译插件版        
+  # 编译插件版
   PLUGINver: true
+  # 发布
   Release: true
+  # 同步至网盘
+  OneDrive: tru
   SOURCE_REPO: 'https://github.com/levenwindy/test1'
   DESTINATION_REPO: 'git@github.com:levenwindy/test1.git'
   SSH_KEY: ${{ secrets.SSH_KEY }}
@@ -142,6 +145,7 @@ jobs:
       #  run: curl -s https://rclone.org/install.sh | sudo bash
         
       - name: 1.Mount onedrive #解压配置文件
+        if: env.OneDrive == 'true'
         run: |
           curl -s https://rclone.org/install.sh | sudo bash
           sudo -E apt-get -qq install unzip
@@ -728,32 +732,22 @@ jobs:
           tar zcvf RELEASE/$openclash_ssrplus_passwall_SYSUPGRADE.tar.gz openwrt/bin/targets/*/*/*squashfs-sysupgrade.bin || echo "ERROR: $NAME is no sysupgrade"
           
 ##############################################
+
       - name: 1.UPload1 test
         id: UPload1
-        if: env.Release == 'true' && !failure() && !cancelled() 
+        if: env.Release == 'true' && env.OneDrive == 'true' && !failure() && !cancelled() 
         run: |
           # 1.判断是否网盘是否被使用
           times=0
-          while true;do up_status=`cat /onedrive5g/log/log.txt`  ||  up_status=1
-            if [[ $up_status != 0 ]];then 
-              echo "log is not 0, The OneDrive is being used " ; 
-              echo 'sleep 2m...' ;
-              sleep 2m;
-              let times++
-              if [[ $times -ge 10 ]];then 
-                echo "超过30分钟" ; 
-                echo "0" >  /onedrive5g/log/log.txt ;
-              fi
-            else 
-              echo "up_status = $up_status"; echo "1" >  /onedrive5g/log/log.txt ; 
-              break ;
-            fi ;
-          done
+          while true;do up_status=`cat /onedrive5g/log/log.txt` || up_status=1
+            if [[ $up_status != 0 ]];then echo "log is not 0, The OneDrive is being used " ; echo 'sleep 2m...' ; sleep 2m; let times++
+              if [[ $times -ge 10 ]];then echo "超过30分钟" ; echo "0" >  /onedrive5g/log/log.txt ; fi
+            else echo "up_status = $up_status"; echo "1" >  /onedrive5g/log/log.txt ; break ; fi ;done
           echo "::set-output name=status::success"
           
       - name: 1.UPload1 start
         id: UPload1_start
-        if: env.Release == 'true' && steps.UPload1.outputs.status == 'success' && !failure() && !cancelled() 
+        if: env.Release == 'true' && env.OneDrive == 'true' && steps.UPload1.outputs.status == 'success' && !failure() && !cancelled() 
         run: |
           logname=$(date +"%Y.%m.%d_%H.%M")
           cp /onedrive5g/log/360T7_backup.log .
@@ -775,14 +769,14 @@ jobs:
           
       # 如果下载过程或上传过程失败 log=0
       - name: 1.UPload Download Failure
-        if: env.Release == 'true' && steps.UPload1_start.outputs.status == 'success' && failure()
+        if: env.Release == 'true' && env.OneDrive == 'true' && steps.UPload1_start.outputs.status == 'success' && failure()
         run: |
           echo "0" >  /onedrive5g/log/log.txt
           up_status=`cat /onedrive5g/log/log.txt`
           echo "up_status: $up_status"
       
       - name: 1.Generate release tag1 latest
-        if: env.Release == 'true' && !failure()  && !cancelled()
+        if: env.Release == 'true' && !failure()
         id: tag1
         run: |
           echo "::set-output name=release_tag1::latest"
@@ -793,7 +787,7 @@ jobs:
           
       - name: 1.Upload firmware to release
         uses: softprops/action-gh-release@v1
-        if: steps.tag1.outputs.status == 'success' && !cancelled() && env.Release == 'true'
+        if: steps.tag1.outputs.status == 'success' && env.Release == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
