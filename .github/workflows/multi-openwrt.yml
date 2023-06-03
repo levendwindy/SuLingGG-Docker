@@ -17,7 +17,7 @@ env:
   # 原厂固件版  
   VanillaUboot: tru
   # 编译插件版
-  PLUGINver: tru
+  PLUGINver: true
   # 发布
   Release: true
   # 同步至网盘
@@ -213,7 +213,7 @@ jobs:
       - name: Install feeds
         run: cd openwrt && ./scripts/feeds install -a
 
-      - name: 1.Load custom configuration
+      - name: 1.Load custom configuration DIY_P2_SH
          # [-e ] 判断对象是否存在 -f 常规文件 -d 目录
           # [ -e files ] && cp files openwrt/files
         run: |
