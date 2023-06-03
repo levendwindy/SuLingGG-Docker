@@ -38,9 +38,14 @@ sed -i 's/pool.ntp.org/cn.pool.ntp.org/g'  package/base-files/files/bin/config_g
 # 替换源 
 sed -i 's,mirrors.vsean.net/openwrt,mirrors.pku.edu.cn/immortalwrt,g'  package/emortal/default-settings/files/99-default-settings-chinese
 
+# ---------------------------------------------------------------------------------------
+# :label;  这是一个标签，用来实现跳转处理，名字可以随便取(label),后面的b label就是跳转指令
+# N;  N是sed的一个处理命令，追加文本流中的下一行到模式空间进行合并处理，因此是换行符可见
+# s/\n/:/;   s是sed的替换命令，将换行符替换为冒号
+# b label  或者 t label    b / t 是sed的跳转命令，跳转到指定的标签处
+# ---------------------------------------------------------------------------------------
 # 删除以中文字符开头的行
-cp target/linux/mediatek/files-5.4/arch/arm64/boot/dts/mediatek/mt7981-h3c-nx30pro.dts mt7981-h3c-nx30pro.dts
-sed -r  '/^([\x81-\xFE][\x40-\xFE]).*/d' mt7981-h3c-nx30pro.dts > target/linux/mediatek/files-5.4/arch/arm64/boot/dts/mediatek/mt7981-h3c-nx30pro.dts && rm mt7981-h3c-nx30pro.dts
+sed -i ':label;N;s/^[\x81-\xFE][\x40-\xFE].*\n//g' target/linux/mediatek/files-5.4/arch/arm64/boot/dts/mediatek/mt7981-h3c-nx30pro.dts
 cat target/linux/mediatek/files-5.4/arch/arm64/boot/dts/mediatek/mt7981-h3c-nx30pro.dts
 
 
