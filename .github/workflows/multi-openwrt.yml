@@ -2,7 +2,7 @@ name: Multi-OpenWrt Images
  
 env:
   TZ: Asia/Shanghai
-  # 下载线程数 DOWNLOAD
+  # 下载线程数 DOWNLOAD 
   DOWNLOAD: 8
   # 编译核心数 0 默认最多 
   NPROC: 0
