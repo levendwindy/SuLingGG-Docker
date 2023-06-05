@@ -29,6 +29,7 @@ jobs:
         run: |
           mkdir RELEASE && cd RELEASE
           export RELEASE_dir=`pwd`
+          echo "RELEASE_dir=$RELEASE_dir" >> $GITHUB_ENV
           truncate -s 99M 1.6-360T7-108M-hanwckf-openclash-ssrplus-passwall-BIN.tar.gz
           truncate -s 99M 2.5-360T7-108M-ImmortalWrt-openclash-factory.tar.gz
           truncate -s 99M 1.6-360T7-108M-hanwckf-openclash-ssrplus-passwall-sysupgrade.tar.gz
@@ -49,7 +50,7 @@ jobs:
       - name: UPLOAD
       # 'HISTORY' LZ云目录名
         run: |
-          python3 python/lzy.py ${{ secrets.LZ_YLOGIN }} ${{ secrets.LZ_PHPDISK }} '$RELEASE_dir' 'HISTORY'
+          python3 python/lzy.py ${{ secrets.LZ_YLOGIN }} ${{ secrets.LZ_PHPDISK }} $RELEASE_dir 'HISTORY'
         
           
           
