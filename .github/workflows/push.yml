@@ -50,7 +50,8 @@ jobs:
       - name: UPLOAD
       # 'HISTORY' LZ云目录名
         run: |
-          python3 python/lzy.py ${{ secrets.LZ_YLOGIN }} ${{ secrets.LZ_PHPDISK }} $RELEASE_dir 'HISTORY'
+          python3 python/lzy.py ${{ secrets.LZ_YLOGIN }} ${{ secrets.LZ_PHPDISK }}  \
+                  'HISTORY'  'latest_TEST'  $RELEASE_dir
         
           
           
