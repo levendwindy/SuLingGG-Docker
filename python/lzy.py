@@ -11,10 +11,13 @@ from lanzou.api import LanZouCloud
 
 ylogin = sys.argv[1]
 phpdisk_info = sys.argv[2]
+# GitHub 上传路径
 Github_path = sys.argv[3]
+# 新建的目录所在文件夹
 LZ_folder_name = sys.argv[4]
 
 cookie = {'ylogin': f'{ylogin}', 'phpdisk_info': f'{phpdisk_info}'}
+
 
 # LZ_YLOGIN      LZ_PHPDISK
 # 通过 id 获取文件夹的绝对路径
@@ -23,6 +26,7 @@ cookie = {'ylogin': f'{ylogin}', 'phpdisk_info': f'{phpdisk_info}'}
 def exID(folder_name):
     ex = f"FolderId\(name='{folder_name}', id=(\d+)\)"
     return ex
+
 
 def show_progress(file_name, total_size, now_size):
     """显示进度的回调函数"""
@@ -33,8 +37,6 @@ def show_progress(file_name, total_size, now_size):
         percent * 100, bar_str, now_size / 1048576, total_size / 1048576, file_name), end='')
     if total_size == now_size:
         print('')  # 下载完成换行
-
-
 
 
 class lanzou(object):
@@ -48,7 +50,6 @@ class lanzou(object):
         else:
             print(f'蓝奏云登录 failed！\nERROR：  res= {res}')
 
-
     def __del__(self):
         pass
         # 注销
@@ -56,21 +57,22 @@ class lanzou(object):
         #    print(f'蓝奏云注销成功')
 
         # 获取网盘全部文件夹(用于移动文件)
+
     def get_FOLDERS(self):
         folders = self.lzy.get_move_folders()
         return folders
 
         # 获取文件夹ID(用于移动文件)
-    def get_FOLDER_ID(self,folder_name):
+
+    def get_FOLDER_ID(self, folder_name):
         folders = self.lzy.get_move_folders()
         ex = exID(folder_name)
         folder_id = int(re.findall(ex, str(folders.find_by_name(folder_name)), re.S)[0])
         return folder_id
 
-
     # 获取某文件夹下的文件列表
     # .get_file_list(folder_id)
-    def get_FILE_list(self,folder_name):
+    def get_FILE_list(self, folder_name):
         folder_id = self.get_FOLDER_ID(folder_name)
         file_list = self.lzy.get_file_list(folder_id)
         if len(str(file_list)) <= 7:
@@ -83,8 +85,8 @@ class lanzou(object):
             return file_id
 
     # 移动文件夹(id=1384074)到文件夹(id=879591)内
-        #       lzy.move_file(12741016, 1037083)
-    def MOVE_folder(self, folder_ID,parent_folder_id):
+    #       lzy.move_file(12741016, 1037083)
+    def MOVE_folder(self, folder_ID, parent_folder_id):
         try:
             res = self.lzy.move_folder(int(folder_ID), int(parent_folder_id))
         except TypeError:
@@ -119,7 +121,7 @@ class lanzou(object):
 
     # 创建文件夹并返回id
     #        lzy.mkdir(-1, 'my_music', '音乐分享')
-    def MKDIR_folder(self,parent_id, folder_name, desc=''):
+    def MKDIR_folder(self, parent_id, folder_name, desc=''):
         fid = self.lzy.mkdir(parent_id, folder_name, desc)
         if fid == False:
             print('创建文件夹失败')
@@ -144,11 +146,10 @@ class lanzou(object):
         if self.lzy.set_passwd(int(fid), passwd, is_file) == 0:
             print(f'修改文件(夹) {int(fid)} 提取码为 {passwd}')
 
-
         """显示失败文件的回调函数"""
+
     def show_failed(self, code, filename):
         print(f"下载失败,错误码: {code}, 文件名: {filename}")
-
 
     def _after_uploaded(self, fid, is_file):
         """上传完成自动设置提取码, 如果有其它回调函数就调用"""
@@ -159,6 +160,7 @@ class lanzou(object):
 
         # if self._uploaded_handler is not None:
         #     self._uploaded_handler(fid, is_file)
+
     def handler(self, fid, is_file, desc=''):
         if is_file:
             self.lzy.set_desc(int(fid), desc, is_file=True)
@@ -182,7 +184,7 @@ class lanzou(object):
 
     # 重命名 并 移动这个文件夹
     #                             文件名      新文件名           父级文件名    修改描述信息   是否为文件
-    def get_FOLDER_ID_move(self,folder_name, new_folder_name, parent_name, desc, is_file=False):
+    def get_FOLDER_ID_move(self, folder_name, new_folder_name, parent_name, desc, is_file=False):
         folder_ID = self.get_FOLDER_ID(folder_name)
         ex = exID(parent_name)
         print(f'ex parent_name: {ex}')
@@ -209,6 +211,7 @@ class lanzou(object):
             print(file_path)
             self.UPLOAD_file(file_path, parent_name)
 
+
 def test(lz):
     #                             文件名      新文件名       父级文件名    修改描述信息   是否为文件
     # lz.get_FOLDER_ID_move('HISTORY', 'HISTORY1', '360T7', f'360T7_固件_{nowtime}', False)
@@ -226,7 +229,7 @@ def test(lz):
         """通过cookie登录"""
         self._session.cookies.update(cookie)
         html = self._get(self._account_url)
-        
+
     def get_file_list(self, folder_id=-1) -> FileList:
         """获取文件列表"""
         page = 1
@@ -234,6 +237,7 @@ def test(lz):
         while True:
             post_data = {'task': 5, 'folder_id': folder_id, 'pg': page, 'vei': 'vei'}
 '''
+
 
 def main():
     lz = lanzou()
@@ -254,19 +258,18 @@ def main():
     # 移动
     # lz.MOVE_folder(old_latest_ID,)
 
-    #old_latestId = re.findall(r"name='latest', ", resFOLDERS)
+    # old_latestId = re.findall(r"name='latest', ", resFOLDERS)
     # print(old_latestId)
 
     # # 创建文件夹 放在哪个目录    文件夹名称
     father_id = lz.get_FOLDER_ID(LZ_folder_name)
     lz.MKDIR_folder(father_id, nowtime, f'历史资料')
-    # # # 移动文件夹下所有的文件  到新文件夹
-    # lz.MKDIR_files_from_folder('HISTORY1', nowtime)
-    # # # 上传文件
-    # lz.UPLOAD_file(r"/volume3/test1/id1.rar", 'HISTORY1')
+    # # 移动文件夹下所有的文件  到新文件夹
+    lz.MKDIR_files_from_folder('HISTORY1', nowtime)
 
     # 上传目录下的所有文件
     lz.UPLOAD_files_from_DIR(Github_path, nowtime)
 
-if __name__=='__main__':
+
+if __name__ == '__main__':
     main()
