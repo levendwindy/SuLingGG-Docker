@@ -176,7 +176,7 @@ class lanzou(object):
         # code = self.lzy.upload_file(file_path, folder_id, callback=show_progress, uploaded_handler=self.handler)
         # show_progress  进度回调函数: 该函数用于跟踪上传进度
         # uploaded_handler 上传回调函数: 该函数用于上传完成后进一步处理文件(设置提取码, 描述信息等)
-        code = self.lzy.upload_file(file_path, folder_id, callback=None, uploaded_handler=None)
+        code = self.lzy.upload_file(file_path, folder_id, None, None)
         if code == 0:
             print(f'上传文件 {file_name} 成功')
 
