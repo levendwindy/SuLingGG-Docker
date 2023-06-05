@@ -270,12 +270,12 @@ def main():
     # # 创建文件夹 放在哪个目录    文件夹名称
     father_id = lz.get_FOLDER_ID(LZ_folder_name)
     lz.MKDIR_folder(father_id, nowtime, f'历史资料')
-    
+
     # # 移动文件夹下所有的文件  到新文件夹
     lz.MKDIR_files_from_folder(MOVE_dir, nowtime)
 
-    # 上传目录下的所有文件
-    lz.UPLOAD_files_from_DIR(Github_path, nowtime)
+    # 上传Github_path目录下的所有文件 到 MOVE_dir
+    lz.UPLOAD_files_from_DIR(Github_path, MOVE_dir)
 
 
 if __name__ == '__main__':
