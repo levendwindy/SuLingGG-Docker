@@ -9,6 +9,9 @@ import sys
 import os
 from lanzou.api import LanZouCloud
 
+for i in sys.argv:
+    print(i)
+
 ylogin = sys.argv[1]
 phpdisk_info = sys.argv[2]
 # GitHub 上传路径
