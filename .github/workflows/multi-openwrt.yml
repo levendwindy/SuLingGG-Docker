@@ -17,11 +17,11 @@ env:
   SSH2: tru
   SSHNAME: 'padavanonly'
   # 原厂固件版  
-  VanillaUboot: true
+  VanillaUboot: tru
   # 编译插件版
-  PLUGINver: true
+  PLUGINver: tru
   # 发布
-  Release: true
+  Release: tru
   # 同步至网盘
   OneDrive: tru
   SOURCE_REPO: 'https://github.com/levenwindy/test1'
