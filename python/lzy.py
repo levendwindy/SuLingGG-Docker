@@ -9,15 +9,17 @@ import sys
 import os
 from lanzou.api import LanZouCloud
 
-for i in sys.argv:
-    print(i)
 
 ylogin = sys.argv[1]
 phpdisk_info = sys.argv[2]
-# GitHub 上传路径
-Github_path = sys.argv[3]
+
 # 新建的目录所在文件夹
-LZ_folder_name = sys.argv[4]
+LZ_folder_name = sys.argv[3]
+# 移动当前目录所有的文件
+MOVE_dir = sys.argv[4]
+# GitHub 上传路径
+Github_path = sys.argv[5]
+
 
 cookie = {'ylogin': f'{ylogin}', 'phpdisk_info': f'{phpdisk_info}'}
 
@@ -264,11 +266,13 @@ def main():
     # old_latestId = re.findall(r"name='latest', ", resFOLDERS)
     # print(old_latestId)
 
+
     # # 创建文件夹 放在哪个目录    文件夹名称
     father_id = lz.get_FOLDER_ID(LZ_folder_name)
     lz.MKDIR_folder(father_id, nowtime, f'历史资料')
+    
     # # 移动文件夹下所有的文件  到新文件夹
-    lz.MKDIR_files_from_folder('HISTORY1', nowtime)
+    lz.MKDIR_files_from_folder(MOVE_dir, nowtime)
 
     # 上传目录下的所有文件
     lz.UPLOAD_files_from_DIR(Github_path, nowtime)
