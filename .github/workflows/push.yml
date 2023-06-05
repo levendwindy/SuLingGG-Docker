@@ -41,7 +41,7 @@ jobs:
           # sudo pip3 install requests-toolbelt
         run: |
           git clone https://github.com/levenwindy/LanZouCloud-API && cd LanZouCloud-API
-          pip install -r requirements.txt
+          # pip install -r requirements.txt
           sudo python3 setup.py install 
           
       - name: UPLOAD
