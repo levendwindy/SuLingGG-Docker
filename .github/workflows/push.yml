@@ -1,4 +1,4 @@
-name: Multi-OpenWrt Images
+name: UPload 蓝奏云
   
 on:
   push:
@@ -11,8 +11,6 @@ env:
   SSH_PUB: ${{ secrets.SSH_PUB }}
   EMAIL_GITHUB: ${{ secrets.EMAIL_GITHUB }}
   NAME_GITHUB: ${{ secrets.NAME_GITHUB }}
-  LZ_YLOGIN: ${{ secrets.LZ_YLOGIN }}
-  LZ_PHPDISK: ${{ secrets.LZ_PHPDISK }}
   
 jobs:
   build:
@@ -22,18 +20,32 @@ jobs:
       - name: Checkout
         uses: actions/checkout@main
         
-      - name: Install rclone #安装rclone
-        run: curl https://rclone.org/install.sh | sudo bash
-        
-      - name: Lanzou 蓝奏云
+      - name: install 
         run: |
-          which python
-          which pip
-          pip -V
-          python -V
-          pip install lanzou-api
-          ls -al
-          python python/lzy.py $LZ_YLOGIN $LZ_PHPDISK
+          sudo apt update
+          sudo apt install rename
+          
+      - name: creat and rename
+        run: |
+          mkdir RELEASE && cd RELEASE
+          export RELEASE_dir=`pwd`
+          truncate -s 99M 1.6-360T7-108M-hanwckf-openclash-ssrplus-passwall-BIN.tar.gz
+          truncate -s 99M 2.5-360T7-108M-ImmortalWrt-openclash-factory.tar.gz
+          truncate -s 99M 1.6-360T7-108M-hanwckf-openclash-ssrplus-passwall-sysupgrade.tar.gz
+          rename "s/openclas/open猫/" *
+          rename "s/ssrplus/师夷/" *
+          rename "s/passwall/pa斯沃/" *
+          
+      - name: creat
+        run: |
+          git clone https://github.com/levenwindy/LanZouCloud-API && cd LanZouCloud-API
+          python setup.py
+          
+      - name: UPLOAD
+      # 'HISTORY' LZ云目录名
+        run: |
+          python3 python/lzy.py ${{ secrets.LZ_YLOGIN }} ${{ secrets.LZ_PHPDISK }} $RELEASE_dir 'HISTORY'
+        
           
           
         
