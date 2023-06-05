@@ -48,7 +48,7 @@ sed -i 's,mirrors.vsean.net/openwrt,mirrors.pku.edu.cn/immortalwrt,g'  package/e
 # sed -i '1d' target/linux/mediatek/files-5.4/arch/arm64/boot/dts/mediatek/mt7981-h3c-nx30pro.dts
 LANG=C sed -i ':label;N;s/^[\x81-\xFE][\x40-\xFE].*\n//g' target/linux/mediatek/files-5.4/arch/arm64/boot/dts/mediatek/mt7981-h3c-nx30pro.dts
 # sed -i ":label;N;s/^[\x81-\xFE][\x40-\xFE].*\n//g" target/linux/mediatek/files-5.4/arch/arm64/boot/dts/mediatek/mt7981-h3c-nx30pro.dts
-# cat target/linux/mediatek/files-5.4/arch/arm64/boot/dts/mediatek/mt7981-h3c-nx30pro.dts
+cat target/linux/mediatek/files-5.4/arch/arm64/boot/dts/mediatek/mt7981-h3c-nx30pro.dts
 # rm -rf target/linux/mediatek/files-5.4/arch/arm64/boot/dts/mediatek/mt7981-h3c-*
 # ls -al target/linux/mediatek/files-5.4/arch/arm64/boot/dts/mediatek/
 
