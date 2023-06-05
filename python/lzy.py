@@ -50,6 +50,7 @@ class lanzou(object):
         res = self.lzy.login_by_cookie(cookie)
         self._now_size = 0
         self._total_size = 1
+        self._uploaded_handler = None
         if res == 0:
             print(f'蓝奏云登录成功')
         else:
@@ -163,8 +164,13 @@ class lanzou(object):
         else:
             self.lzy.set_passwd(fid, '', is_file=False)
 
-        # if self._uploaded_handler is not None:
-        #     self._uploaded_handler(fid, is_file)
+        if self._uploaded_handler is not None:
+            self._uploaded_handler(fid, is_file)
+
+    def set_uploaded_handler(self, handler):
+        """设置上传完成后的回调函数"""
+        if handler is not None:
+            self._uploaded_handler = self.handler
 
     def handler(self, fid, is_file, desc=''):
         if is_file:
@@ -176,7 +182,7 @@ class lanzou(object):
         # code = self.lzy.upload_file(file_path, folder_id, callback=show_progress, uploaded_handler=self.handler)
         # show_progress  进度回调函数: 该函数用于跟踪上传进度
         # uploaded_handler 上传回调函数: 该函数用于上传完成后进一步处理文件(设置提取码, 描述信息等)
-        code = self.lzy.upload_file(file_path, folder_id, None, None)
+        code = self.lzy.upload_file(file_path, folder_id, callback=None, uploaded_handler=self._after_uploaded)
         if code == 0:
             print(f'上传文件 {file_name} 成功')
 
