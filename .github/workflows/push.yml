@@ -39,6 +39,7 @@ jobs:
       - name: creat
         run: |
           git clone https://github.com/levenwindy/LanZouCloud-API && cd LanZouCloud-API
+          pip3 install requests-toolbelt
           python setup.py
           
       - name: UPLOAD
