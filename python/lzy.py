@@ -51,6 +51,8 @@ class lanzou(object):
         self._now_size = 0
         self._total_size = 1
         self._uploaded_handler = None
+        self._default_file_pwd = ''
+        self._default_dir_pwd = ''
         if res == 0:
             print(f'蓝奏云登录成功')
         else:
@@ -124,7 +126,7 @@ class lanzou(object):
                 print(f'文件夹 {folder_name} 内的文件已转移完毕')
                 break
             new_folder_id = self.get_FOLDER_ID(new_folder_name)
-            print(f'文件夹名{folder_name} 文件id {file_id}  新文件夹名 {new_folder_name}  新文件id {new_folder_id}')
+            # print(f'文件夹名{folder_name} 文件id {file_id}  新文件夹名 {new_folder_name}  新文件id {new_folder_id}')
             self.MOVE_file(file_id, new_folder_id)
 
     # 创建文件夹并返回id
@@ -162,10 +164,9 @@ class lanzou(object):
     def _after_uploaded(self, fid, is_file):
         """上传完成自动设置提取码, 如果有其它回调函数就调用"""
         if is_file:
-            self.lzy.set_passwd(fid, '', is_file=True)
+            self.lzy.set_passwd(fid, self._default_file_pwd, is_file=True)
         else:
-            self.lzy.set_passwd(fid, '', is_file=False)
-
+            self.lzy.set_passwd(fid, self._default_dir_pwd, is_file=False)
         if self._uploaded_handler is not None:
             self._uploaded_handler(fid, is_file)
 
@@ -185,7 +186,7 @@ class lanzou(object):
         # code = self.lzy.upload_file(file_path, folder_id, callback=show_progress, uploaded_handler=self.handler)
         # show_progress  进度回调函数: 该函数用于跟踪上传进度
         # uploaded_handler 上传回调函数: 该函数用于上传完成后进一步处理文件(设置提取码, 描述信息等)
-        code = self.lzy.upload_file(file_path, folder_id, callback=None, uploaded_handler=self.handler)
+        code = self.lzy.upload_file(file_path, folder_id, callback=None, uploaded_handler=self._after_uploaded)
         if code == 0:
             print(f'上传文件 {file_name} 成功')
 
