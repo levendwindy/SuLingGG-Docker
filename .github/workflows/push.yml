@@ -33,6 +33,7 @@ jobs:
           truncate -s 99M 1.6-360T7-108M-hanwckf-openclash-ssrplus-passwall-BIN.tar.gz
           truncate -s 99M 2.5-360T7-108M-ImmortalWrt-openclash-factory.tar.gz
           truncate -s 99M 1.6-360T7-108M-hanwckf-openclash-ssrplus-passwall-sysupgrade.tar.gz
+          truncate -s 101M 1.7-360T7-101M-hanwckf-openclash-ssrplus-passwall-sysupgrade.tar.gz
           rename "s/openclas/猫/" *
           rename "s/ssrplus/师夷/" *
           rename "s/passwall/pa斯沃/" *
