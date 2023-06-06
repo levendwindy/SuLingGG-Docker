@@ -85,7 +85,7 @@ class lanzou(object):
             # print(f'文件夹 {folder_name} 没有文件')
             return False
         else:
-            print(f'file_list: {file_list} 长度: {len(str(file_list))}')
+            # print(f'file_list: {file_list} 长度: {len(str(file_list))}')
             file_id = int(re.findall('id=(\d+),', str(file_list), re.S)[0])
             # print(f'file_id: {file_id}')
             return file_id
@@ -101,7 +101,7 @@ class lanzou(object):
             print("未知错误 %s" % result)
         else:
             if res == 0:
-                print(f'已将文件夹 {folder_ID} 移至 {parent_folder_id}')
+                print(f'已将文件夹 {folder_ID} 成功转义')
             elif res == -1:
                 print(f'移动失败 文件夹 {folder_ID} 位于同级目录')
             else:
@@ -110,10 +110,12 @@ class lanzou(object):
     # 移动文件(id=12741016) 到文件夹(id=1037083)
     #    lzy.move_file(12741016, 1037083) == LanZouCloud.SUCCESS
     def MOVE_file(self, folder_id, parent_folder_id):
-        if self.lzy.move_file(int(folder_id), int(parent_folder_id)) == 0:
-            print(f'已将文件 {int(folder_id)} 移动至 {int(parent_folder_id)}')
+        res = self.lzy.move_file(int(folder_id), int(parent_folder_id))
+        if res == 0:
+            # print(f'已将文件 {int(folder_id)} 移动至 {int(parent_folder_id)}')
+            print(f'文件 {int(folder_id)} 已成功转移')
         else:
-            print(f'移动文件错误，res: {self.lzy.move_file(int(folder_id), int(parent_folder_id))}')
+            print(f'移动文件错误，res: {res}')
 
     def MKDIR_files_from_folder(self, folder_name, new_folder_name):
         while True:
@@ -290,3 +292,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
