@@ -189,6 +189,8 @@ class lanzou(object):
         code = self.lzy.upload_file(file_path, folder_id, callback=None, uploaded_handler=self._after_uploaded)
         if code == 0:
             print(f'上传文件 {file_name} 成功')
+        else:
+            print(f'文件 {file_name} 上传失败  错误代码{self.lzy.FAILED}')
 
     # 上传一个文件夹  本地文件夹路径(dir_path必填)  网盘文件夹id(folder_id)
     # 进度回调函数(callback)  失败处理回调函数(failed_callback)   上传回调函数(uploaded_handler)
