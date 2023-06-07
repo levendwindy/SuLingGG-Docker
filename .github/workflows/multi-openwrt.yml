@@ -185,7 +185,7 @@ jobs:
         run: |
           times=0
           min=1
-          max=$((60-$min+1))
+          max=$((10-$min+1))
           num=$(date +%s%N)
           sleeptime=$(($num%$max+$min))
           echo "休眠  $sleeptime"
@@ -204,7 +204,7 @@ jobs:
                   'HISTORY'  'latest'  $RELEASE_dir 1 
               
               LZYstatus=$(($LZYstatus+1)) ; 
-              if [[ $LZYstatus == 6 ]];then echo 0 > /onedrive5g/log/Lanzhou_log.txt && echo "LZYstatus：$LZYstatus 成功初始化 " ; else echo $LZYstatus > /onedrive5g/log/Lanzhou_log.txt ; fi 
+              if [[ $LZYstatus == 6 ]];then echo 0 > /onedrive5g/log/Lanzhou_log.txt && echo -e "LZYstatus：$LZYstatus 成功初始化\nLanzhou_log=0" ; else echo $LZYstatus > /onedrive5g/log/Lanzhou_log.txt ; fi 
           
               break
             elif [[ $(($LZYstatus%2)) == 1 ]];then echo "LZY is being used " && echo "LZYstatus: $LZYstatus" ; echo 'sleep 10s...' ; sleep 10s; times=$(($times+1)) ; 
