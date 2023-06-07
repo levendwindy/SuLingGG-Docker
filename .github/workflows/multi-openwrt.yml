@@ -23,7 +23,7 @@ env:
   # 发布
   Release: tru
   # 同步至网盘
-  OneDrive: tru
+  OneDrive: true
   SOURCE_REPO: 'https://github.com/levenwindy/test1'
   DESTINATION_REPO: 'git@github.com:levenwindy/test1.git'
   SSH_KEY: ${{ secrets.SSH_KEY }}
