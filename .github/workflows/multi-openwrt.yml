@@ -190,15 +190,15 @@ jobs:
           sleeptime=$(($num%$max+$min))
           echo "休眠  $sleeptime"
           sleep $sleeptime
-          while true;do LZYstatus=`cat /onedrive5g/log/Lanzhou_log.txt` && echo "LZYstatus: $LZYstatus" || echo "LZYstatus 获取失败"
-            if [[ $LZYstatus == 0 ]];then echo "LZY 暂未被开启" ; LZYstatus=$(($LZYstatus+1)) ; echo "0.2" ; echo $LZYstatus > /onedrive5g/log/Lanzhou_log.txt
+          while true;do LZYstatus=`cat /onedrive5g/log/Lanzhou_log.txt`|| echo "LZYstatus 获取失败"
+            if [[ $LZYstatus == 0 ]];then echo "LZY 暂未被开启"  && echo "LZYstatus: $LZYstatus" ; LZYstatus=$(($LZYstatus+1)) ; echo "0.2" ; echo $LZYstatus > /onedrive5g/log/Lanzhou_log.txt
               echo "0"
               python3 python/lzy.py ${{ secrets.LZ_YLOGIN }} ${{ secrets.LZ_PHPDISK }}  \
                   'HISTORY'  'latest'  $RELEASE_dir 0
               echo "1"
               LZYstatus=$(($LZYstatus+1)) ; echo $LZYstatus > /onedrive5g/log/Lanzhou_log.txt 
               echo "2"; break
-            elif [[ $(($LZYstatus%2)) == 0 ]];then  echo "LZY 已开启，直接上传" ; LZYstatus=$(($LZYstatus+1)) ; echo $LZYstatus > /onedrive5g/log/Lanzhou_log.txt ; 
+            elif [[ $(($LZYstatus%2)) == 0 ]];then  echo "LZY 已开启，直接上传"  && echo "LZYstatus: $LZYstatus" ; LZYstatus=$(($LZYstatus+1)) ; echo $LZYstatus > /onedrive5g/log/Lanzhou_log.txt ; 
               echo "3"
               python3 python/lzy.py ${{ secrets.LZ_YLOGIN }} ${{ secrets.LZ_PHPDISK }}  \
                   'HISTORY'  'latest'  $RELEASE_dir 1 
@@ -207,7 +207,7 @@ jobs:
               if [[ $LZYstatus == 6 ]];then echo 0 > /onedrive5g/log/Lanzhou_log.txt ; else echo $LZYstatus > /onedrive5g/log/Lanzhou_log.txt ; fi 
               echo "5"
               break
-            elif [[ $(($LZYstatus%2)) == 1 ]];then echo "LZY is being used " ; echo 'sleep 10s...' ; sleep 10s; times=$(($times+1)) ; 
+            elif [[ $(($LZYstatus%2)) == 1 ]];then echo "LZY is being used " && echo "LZYstatus: $LZYstatus" ; echo 'sleep 10s...' ; sleep 10s; times=$(($times+1)) ; 
               echo "6"
               if [[ $times -ge 20 ]];then echo "超过20分钟" ; LZYstatus=$(($LZYstatus+1)) ; echo $LZYstatus > /onedrive5g/log/Lanzhou_log.txt ; fi 
               echo "7"
