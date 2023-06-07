@@ -170,46 +170,46 @@ jobs:
           cd RELEASE
           truncate -s 10M 1.1-101M-hanwckf-$RANDOM-sysupgrade.tar.gz
           truncate -s 11M 1.2-108M-hanwckf-$RANDOM-BIN.tar.gz
-          while true;do up_status=`cat /onedrive5g/log/Lanzhou_log.txt`
-            if [[ $up_status == 0 ]];then echo "LZY 暂未被开启"; echo "up_status : $up_status" ; let up_status++ ; echo "0.2" ; echo $up_status > /onedrive5g/log/Lanzhou_log.txt
+          while true;do LZYstatus=`cat /onedrive5g/log/Lanzhou_log.txt`
+            if [[ $LZYstatus == 0 ]];then echo "LZY 暂未被开启"; echo "LZYstatus : $LZYstatus" ; let LZYstatus++ ; echo "0.2" ; echo $LZYstatus > /onedrive5g/log/Lanzhou_log.txt
               echo "0"
               python3 python/lzy.py ${{ secrets.LZ_YLOGIN }} ${{ secrets.LZ_PHPDISK }}  \
                   'HISTORY'  'latest'  $RELEASE_dir 0
               echo "1"
-              let up_status++ ; echo $up_status > /onedrive5g/log/Lanzhou_log.txt 
+              let LZYstatus++ ; echo $LZYstatus > /onedrive5g/log/Lanzhou_log.txt 
               echo "2"; break
-            elif [[ $(($up_status%2)) == 0 ]];then  echo "LZY 已开启，直接上传" ; let up_status++ ; echo $up_status > /onedrive5g/log/Lanzhou_log.txt ; 
+            elif [[ $(($LZYstatus%2)) == 0 ]];then  echo "LZY 已开启，直接上传" ; let LZYstatus++ ; echo $LZYstatus > /onedrive5g/log/Lanzhou_log.txt ; 
               echo "3"
               python3 python/lzy.py ${{ secrets.LZ_YLOGIN }} ${{ secrets.LZ_PHPDISK }}  \
                   'HISTORY'  'latest'  $RELEASE_dir 1 
               echo "4"
-              let up_status++ ; 
-              if [[ $up_status == 6 ]];then echo 0 > /onedrive5g/log/Lanzhou_log.txt ; else echo $up_status > /onedrive5g/log/Lanzhou_log.txt ; fi 
+              let LZYstatus++ ; 
+              if [[ $LZYstatus == 6 ]];then echo 0 > /onedrive5g/log/Lanzhou_log.txt ; else echo $LZYstatus > /onedrive5g/log/Lanzhou_log.txt ; fi 
               echo "5"
               break
-            elif [[ $(($up_status%2)) == 1 ]];then echo "LZY is being used " ; echo 'sleep 1m...' ; sleep 1m; let times++ ; 
+            elif [[ $(($LZYstatus%2)) == 1 ]];then echo "LZY is being used " ; echo 'sleep 1m...' ; sleep 1m; let times++ ; 
               echo "6"
-              if [[ $times -ge 20 ]];then echo "超过20分钟" ; let up_status++ ; echo $up_status > /onedrive5g/log/Lanzhou_log.txt ; fi 
+              if [[ $times -ge 20 ]];then echo "超过20分钟" ; let LZYstatus++ ; echo $LZYstatus > /onedrive5g/log/Lanzhou_log.txt ; fi 
               echo "7"
             fi ; done 
           echo "8"
-          export up_status=$up_status 
+          export LZYstatus=$LZYstatus 
           echo "9"
-          echo "up_status=$up_status" >> $GITHUB_ENV
+          echo "LZYstatus=$LZYstatus" >> $GITHUB_ENV
           echo "::set-output name=status::success"
 
       - name: 2.LanzhouYun failer TEST
         if: env.LanzhouYun == 'true' && steps.LZY_TEST.outputs.status == 'success' && failure()
         run: |
-          if [ $up_status -ge 4 ];then echo 0 > /onedrive5g/log/Lanzhou_log.txt ; 
+          if [ $LZYstatus -ge 4 ];then echo 0 > /onedrive5g/log/Lanzhou_log.txt ; 
               echo "10"
-          elif [[ $(($up_status%2)) == 1 ]];then let up_status++ ; echo $up_status > /onedrive5g/log/Lanzhou_log.txt ; 
+          elif [[ $(($LZYstatus%2)) == 1 ]];then let LZYstatus++ ; echo $LZYstatus > /onedrive5g/log/Lanzhou_log.txt ; 
               echo "11"
-          else echo "up_status：$up_status  正常退出"  
+          else echo "LZYstatus：$LZYstatus  正常退出"  
               echo "12"; fi
 
       - name: 2.TEST OVER
-        if: env.LanzhouYun == 'true' && steps.LZY_start.outputs.status == 'success' && failure()
+        if: env.LanzhouYun == 'true' && steps.LZY_TEST.outputs.status == 'success' && failure()
         run: |
           exit 1
           
