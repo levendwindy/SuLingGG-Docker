@@ -161,16 +161,29 @@ jobs:
           rclone mount one:/ /onedrive5g --daemon --copy-links --no-gzip-encoding --no-check-certificate
           df -h
 
+      - name: 2.LZY Environment TEST
+        id: LZY_start_TEST
+        if: env.LanzhouYun == 'true' && !failure() && !cancelled()
+        run: |
+          git clone https://github.com/weigefenxiang/LanZouCloud-API && cd LanZouCloud-API
+          sudo pip install -U pip
+          sudo pip install -r requirements.txt
+          sudo python3 setup.py install 
+          sudo apt install rename
+          mkdir $GITHUB_WORKSPACE/RELEASE
+          cd $GITHUB_WORKSPACE/RELEASE
+          truncate -s 10M 1.1-101M-hanwckf-$RANDOM-sysupgrade.tar.gz
+          truncate -s 11M 1.2-108M-hanwckf-$RANDOM-BIN.tar.gz
+          cd $GITHUB_WORKSPACE/RELEASE
+          export RELEASE_dir=`pwd`
+          echo "RELEASE_dir=$RELEASE_dir" >> $GITHUB_ENV
+          echo "::set-output name=status::success"
+
       - name: 2.UPload LanzhouYun TEST
         id: LZY_TEST
         if: env.LanzhouYun == 'true' && !failure() && !cancelled()
         run: |
-          mkdir RELEASE
           times=0
-          cd RELEASE
-          truncate -s 10M 1.1-101M-hanwckf-$RANDOM-sysupgrade.tar.gz
-          truncate -s 11M 1.2-108M-hanwckf-$RANDOM-BIN.tar.gz
-          cd ../
           while true;do LZYstatus=`cat /onedrive5g/log/Lanzhou_log.txt`
             if [[ $LZYstatus == 0 ]];then echo "LZY 暂未被开启"; echo "LZYstatus : $LZYstatus" ; LZYstatus=$(($LZYstatus+1)) ; echo "0.2" ; echo $LZYstatus > /onedrive5g/log/Lanzhou_log.txt
               echo "0"
