@@ -171,7 +171,7 @@ jobs:
           truncate -s 10M 1.1-101M-hanwckf-$RANDOM-sysupgrade.tar.gz
           truncate -s 11M 1.2-108M-hanwckf-$RANDOM-BIN.tar.gz
           while true;do up_status=`cat /onedrive5g/log/Lanzhou_log.txt`
-            if [[ $up_status == 0 ]];then echo "LZY 暂未被开启"; let up_status++ ; echo $up_status > /onedrive5g/log/Lanzhou_log.txt
+            if [[ $up_status == 0 ]];then echo "LZY 暂未被开启"; echo "0.1" ; let up_status++ ; echo "0.2" ; echo $up_status > /onedrive5g/log/Lanzhou_log.txt
               echo "0"
               python3 python/lzy.py ${{ secrets.LZ_YLOGIN }} ${{ secrets.LZ_PHPDISK }}  \
                   'HISTORY'  'latest'  $RELEASE_dir 0
