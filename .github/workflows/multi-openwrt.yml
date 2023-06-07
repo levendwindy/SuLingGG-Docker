@@ -188,7 +188,7 @@ jobs:
               if [[ $LZYstatus == 6 ]];then echo 0 > /onedrive5g/log/Lanzhou_log.txt ; else echo $LZYstatus > /onedrive5g/log/Lanzhou_log.txt ; fi 
               echo "5"
               break
-            elif [[ $(($LZYstatus%2)) == 1 ]];then echo "LZY is being used " ; echo 'sleep 1m...' ; sleep 1m; let times++ ; 
+            elif [[ $(($LZYstatus%2)) == 1 ]];then echo "LZY is being used " ; echo 'sleep 10s...' ; sleep 10s; times=$(($times+1)) ; 
               echo "6"
               if [[ $times -ge 20 ]];then echo "超过20分钟" ; LZYstatus=$(($LZYstatus+1)) ; echo $LZYstatus > /onedrive5g/log/Lanzhou_log.txt ; fi 
               echo "7"
