@@ -190,8 +190,8 @@ jobs:
           sleeptime=$(($num%$max+$min))
           echo "休眠  $sleeptime"
           sleep $sleeptime
-          while true;do LZYstatus=`cat /onedrive5g/log/Lanzhou_log.txt` || echo "LZYstatus 获取失败"
-            if [[ $LZYstatus == 0 ]];then echo "LZY 暂未被开启"; echo "LZYstatus : $LZYstatus" ; LZYstatus=$(($LZYstatus+1)) ; echo "0.2" ; echo $LZYstatus > /onedrive5g/log/Lanzhou_log.txt
+          while true;do LZYstatus=`cat /onedrive5g/log/Lanzhou_log.txt` && echo "LZYstatus: $LZYstatus" || echo "LZYstatus 获取失败"
+            if [[ $LZYstatus == 0 ]];then echo "LZY 暂未被开启" ; LZYstatus=$(($LZYstatus+1)) ; echo "0.2" ; echo $LZYstatus > /onedrive5g/log/Lanzhou_log.txt
               echo "0"
               python3 python/lzy.py ${{ secrets.LZ_YLOGIN }} ${{ secrets.LZ_PHPDISK }}  \
                   'HISTORY'  'latest'  $RELEASE_dir 0
