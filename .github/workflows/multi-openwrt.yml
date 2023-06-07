@@ -171,25 +171,25 @@ jobs:
           truncate -s 10M 1.1-101M-hanwckf-$RANDOM-sysupgrade.tar.gz
           truncate -s 11M 1.2-108M-hanwckf-$RANDOM-BIN.tar.gz
           while true;do LZYstatus=`cat /onedrive5g/log/Lanzhou_log.txt`
-            if [[ $LZYstatus == 0 ]];then echo "LZY 暂未被开启"; echo "LZYstatus : $LZYstatus" ; let LZYstatus++ ; echo "0.2" ; echo $LZYstatus > /onedrive5g/log/Lanzhou_log.txt
+            if [[ $LZYstatus == 0 ]];then echo "LZY 暂未被开启"; echo "LZYstatus : $LZYstatus" ; LZYstatus=$(($LZYstatus+1)) ; echo "0.2" ; echo $LZYstatus > /onedrive5g/log/Lanzhou_log.txt
               echo "0"
               python3 python/lzy.py ${{ secrets.LZ_YLOGIN }} ${{ secrets.LZ_PHPDISK }}  \
                   'HISTORY'  'latest'  $RELEASE_dir 0
               echo "1"
-              let LZYstatus++ ; echo $LZYstatus > /onedrive5g/log/Lanzhou_log.txt 
+              LZYstatus=$(($LZYstatus+1)) ; echo $LZYstatus > /onedrive5g/log/Lanzhou_log.txt 
               echo "2"; break
-            elif [[ $(($LZYstatus%2)) == 0 ]];then  echo "LZY 已开启，直接上传" ; let LZYstatus++ ; echo $LZYstatus > /onedrive5g/log/Lanzhou_log.txt ; 
+            elif [[ $(($LZYstatus%2)) == 0 ]];then  echo "LZY 已开启，直接上传" ; LZYstatus=$(($LZYstatus+1)) ; echo $LZYstatus > /onedrive5g/log/Lanzhou_log.txt ; 
               echo "3"
               python3 python/lzy.py ${{ secrets.LZ_YLOGIN }} ${{ secrets.LZ_PHPDISK }}  \
                   'HISTORY'  'latest'  $RELEASE_dir 1 
               echo "4"
-              let LZYstatus++ ; 
+              LZYstatus=$(($LZYstatus+1)) ; 
               if [[ $LZYstatus == 6 ]];then echo 0 > /onedrive5g/log/Lanzhou_log.txt ; else echo $LZYstatus > /onedrive5g/log/Lanzhou_log.txt ; fi 
               echo "5"
               break
             elif [[ $(($LZYstatus%2)) == 1 ]];then echo "LZY is being used " ; echo 'sleep 1m...' ; sleep 1m; let times++ ; 
               echo "6"
-              if [[ $times -ge 20 ]];then echo "超过20分钟" ; let LZYstatus++ ; echo $LZYstatus > /onedrive5g/log/Lanzhou_log.txt ; fi 
+              if [[ $times -ge 20 ]];then echo "超过20分钟" ; LZYstatus=$(($LZYstatus+1)) ; echo $LZYstatus > /onedrive5g/log/Lanzhou_log.txt ; fi 
               echo "7"
             fi ; done 
           echo "8"
@@ -203,7 +203,7 @@ jobs:
         run: |
           if [ $LZYstatus -ge 4 ];then echo 0 > /onedrive5g/log/Lanzhou_log.txt ; 
               echo "10"
-          elif [[ $(($LZYstatus%2)) == 1 ]];then let LZYstatus++ ; echo $LZYstatus > /onedrive5g/log/Lanzhou_log.txt ; 
+          elif [[ $(($LZYstatus%2)) == 1 ]];then LZYstatus=$(($LZYstatus+1)) ; echo $LZYstatus > /onedrive5g/log/Lanzhou_log.txt ; 
               echo "11"
           else echo "LZYstatus：$LZYstatus  正常退出"  
               echo "12"; fi
